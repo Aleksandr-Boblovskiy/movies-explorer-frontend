@@ -1,0 +1,33 @@
+.header {
+  font-family: 'Inter', Arial, sans-serif;
+  padding-bottom: 36px;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.5);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+
+@media screen and (max-width: 898px) {
+  .header {
+    padding-bottom: 29px;
+  }
+}
+
+.header__logo {
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 898px){
+  .header__logo {
+    margin-left: 27px;
+    width: 103.74px;
+    height: 24.4px;
+  }
+}
+
+.header__user-cont {
+  display: flex;
+}
