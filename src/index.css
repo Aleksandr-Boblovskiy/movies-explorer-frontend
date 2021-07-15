@@ -1,3 +1,6 @@
 @import url('./vendor/normalize.css');
 @import url('./vendor/fonts/fonts.css');
-@import url('./components/header/Header.css');
+@import url('./components/Header/Header.css');
+@import url('./components/Landing/Promo/Promo.css');
+@import url('./components/Landing/NavTab/NavTab.css');
+@import url('./components/Landing/AboutProject/AboutProject.css');

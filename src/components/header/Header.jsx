@@ -1,36 +1,34 @@
 import React from 'react';
+import { NavLink, Route, Switch } from 'react-router-dom';
 import logo from '../../images/logo.svg';
-import { NavLink, Route, Switch } from "react-router-dom";
 
-function Header({ onSignOut }) {
+function Header() {
   return (
     <header className="header page__header">
       <img className="header__logo" src={logo} alt="Логотип фильмы" />
-      <nav className="header__menu">
-        <Switch>
-          <Route exact path='/'>
-            <nav className='header__user-cont'>
-              <NavLink to="/films" className='header__element' >Фильмы</NavLink>
-              <NavLink to="/savefilms" className='header__element' >Сохраненные фильмы</NavLink>
-              <NavLink to="/accaunt" className='header__element' onClick={onSignOut}>
-                <p className='header__element'>Аккаунт</p>
-                <img className='header__acc-img' alt='Аккаунт'></img>
-              </NavLink>
-            </nav>
-          </Route>
-          <Route path='/signin'>
-            <NavLink to="/signup" className='header__auth'>
+      <Switch>
+        <Route path="/" exact>
+          <nav className="header__menu">
+            <NavLink to="/signup" className="header__element">
               Регистрация
             </NavLink>
-          </Route>
-          <Route path='/signup'>
-            <NavLink to='/signin' className='header__auth' >
+            <NavLink to="/signin" className="header__element header__element_button">
               Войти
             </NavLink>
-          </Route>
-        </Switch>
-      </nav>
-    </header >
+          </nav>
+        </Route>
+        <Route exact path="/(movies|saved-movies|profile)">
+          <nav className="header__menu">
+            <NavLink to="/movies" className="header__element">Фильмы</NavLink>
+            <NavLink to="/saved-movies" className="header__element">Сохраненные фильмы</NavLink>
+            <NavLink to="/profile" className="header__element">
+              <p className="header__element">Аккаунт</p>
+              <img className="header__acc-img" alt="Аккаунт" />
+            </NavLink>
+          </nav>
+        </Route>
+      </Switch>
+    </header>
   );
 }
 
