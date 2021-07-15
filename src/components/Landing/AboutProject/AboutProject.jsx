@@ -19,10 +19,10 @@ function AboutProject() {
           </p>
         </div>
         <div className="about__time-cont">
-          <p>1 неделя</p>
-          <p>4 недели</p>
-          <p>Back-end</p>
-          <p>Front-end</p>
+          <p className="about__element about__element_one-week">1 неделя</p>
+          <p className="about__element about__element_four-week">4 недели</p>
+          <p className="about__element">Back-end</p>
+          <p className="about__element">Front-end</p>
         </div>
       </div>
     </section>

@@ -24,12 +24,6 @@
   row-gap: 26px; 
 }
 
-.about__time-cont {
-  display: grid;
-  grid-template-columns: 20% 80%;
-  text-align: center;
-}
-
 .about__title{
   font-size: 20px;
   line-height: 24px;
@@ -42,4 +36,34 @@
   margin: 0;
   font-size: 14px;
   line-height: 20px;
+}
+
+.about__time-cont {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  text-align: center;
+  margin: 119px 0 110px 0;
+  row-gap: 23px;  
+}
+
+.about__element {
+font-size: 14px;
+line-height: 17px;
+margin: 0;
+width: 200px;
+justify-self: center;
+color: #8B8B8B;
+;
+}
+
+.about__element_one-week {
+  background: #3DDC84;  
+  padding: 10px 14px;
+  color: #fff;
+}
+
+.about__element_four-week {
+  background: #303030;
+  padding: 10px 356px;
+  color: #fff;
 }
