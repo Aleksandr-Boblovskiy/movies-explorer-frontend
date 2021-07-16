@@ -1,10 +1,14 @@
 import React from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom';
+import {
+  NavLink, Route, Switch, useLocation,
+} from 'react-router-dom';
 import logo from '../../images/logo.svg';
 
 function Header() {
+  const { pathname } = useLocation();
+
   return (
-    <header className="header page__header">
+    <header className={`header ${(pathname === '/movies') ? 'header_movies' : ''}`}>
       <img className="header__logo" src={logo} alt="Логотип фильмы" />
       <Switch>
         <Route path="/" exact>

@@ -8,6 +8,10 @@
   background: #073042;    
 }
 
+.header_movies {
+  background: none;
+}
+
 @media screen and (max-width: 898px) {
   .header {
     width: 100%;
