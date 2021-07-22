@@ -3,12 +3,13 @@ import {
   NavLink, Route, Switch, useLocation,
 } from 'react-router-dom';
 import logo from '../../images/logo.svg';
+import account from '../../images/account.svg';
 
 function Header() {
   const { pathname } = useLocation();
 
   return (
-    <header className={`header ${(pathname === '/movies') ? 'header_movies' : ''}`}>
+    <header className={`header ${(pathname === ('/movies') || pathname === ('/profile') || pathname === ('/saved-movies')) ? 'header_movies' : ''}`}>
       <img className="header__logo" src={logo} alt="Логотип фильмы" />
       <Switch>
         <Route path="/" exact>
@@ -26,8 +27,8 @@ function Header() {
             <NavLink to="/movies" className="header__element">Фильмы</NavLink>
             <NavLink to="/saved-movies" className="header__element">Сохраненные фильмы</NavLink>
             <NavLink to="/profile" className="header__element">
-              <p className="header__element">Аккаунт</p>
-              <img className="header__acc-img" alt="Аккаунт" />
+              <p className="header__element-acc">Аккаунт</p>
+              <img className="header__acc-img" alt="Аккаунт" src={account} />
             </NavLink>
           </nav>
         </Route>

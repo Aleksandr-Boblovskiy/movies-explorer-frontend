@@ -1,9 +1,13 @@
 import React from 'react';
+import SearchForm from './SearchForm/SearchForm';
 
 function Movies() {
   return (
     <section>
-      <p>Тест</p>
+      <div className="movies__cont">
+        <SearchForm />
+        <div className="movies__line" />
+      </div>
     </section>
   );
 }

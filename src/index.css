@@ -8,3 +8,6 @@
 @import url('./components/Landing/AboutMe/AboutMe.css');
 @import url('./components/Landing/Portfolio/Portfolio.css');
 @import url('./components/Footer/Footer.css');
+@import url('./components/Movies/Movies.css');
+@import url('./components/Movies/SearchForm/SearchForm.css');
+@import url('./components/Movies/FilterCheckbox/FilterCheckbox.css');

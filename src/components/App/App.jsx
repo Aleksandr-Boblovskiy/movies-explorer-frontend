@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Main from '../Landing/Main/Main';
 import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
+import Profile from '../Profile/Profile';
 
 function App() {
   return (
@@ -14,12 +15,16 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Main />
+            <Footer />
           </Route>
           <Route path="/movies">
             <Movies />
+            <Footer />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
         </Switch>
-        <Footer />
       </div>
     </div>
   );
