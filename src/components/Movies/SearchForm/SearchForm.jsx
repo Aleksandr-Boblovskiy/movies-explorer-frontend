@@ -6,7 +6,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 function SearchForm() {
   return (
     <section className="search">
-      <form className="search__form">
+      <form className="search__form" autoComplete="off">
         <div className="search__cont">
           <img src={find} alt="Найти" className="search__image" />
           <input type="text" name="movie-search" id="movie-search" className="search__text" placeholder="Фильм" />

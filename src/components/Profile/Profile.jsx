@@ -4,18 +4,22 @@ function Profile() {
   return (
     <section className="profile">
       <h2 className="profile__title">Привет, Виталий!</h2>
-      <form className="profile__form">
-        <label htmlFor="name">
-          Имя
-          <input className="profile__name" type="text" name="name" id="name" />
-        </label>
+      <form className="profile__form" autoComplete="off">
+        <div className="profile__cont">
+          <p className="profile__name">
+            Имя
+          </p>
+          <input className="profile__input" type="text" name="name" id="name" />
+        </div>
         <div className="profile__line" />
-        <label htmlFor="email">
-          E-mail
-          <input className="profile__email" type="email" name="email" id="email" />
-        </label>
-        <button type="submit">Редактировать</button>
-        <button type="button">Выйти из аккаунта</button>
+        <div className="profile__cont">
+          <p className="profile__name">
+            E-mail
+          </p>
+          <input className="profile__input" type="email" name="email" id="email" />
+        </div>
+        <button className="profile__button" type="submit">Редактировать</button>
+        <button className="profile__button profile__button_red" type="button">Выйти из аккаунта</button>
       </form>
     </section>
   );

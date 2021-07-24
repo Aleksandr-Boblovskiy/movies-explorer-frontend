@@ -9,7 +9,7 @@ function Header() {
   const { pathname } = useLocation();
 
   return (
-    <header className={`header ${(pathname === ('/movies') || pathname === ('/profile') || pathname === ('/saved-movies')) ? 'header_movies' : ''}`}>
+    <header className={`header ${(pathname === ('/')) ? 'header_landing' : ''}`}>
       <img className="header__logo" src={logo} alt="Логотип фильмы" />
       <Switch>
         <Route path="/" exact>

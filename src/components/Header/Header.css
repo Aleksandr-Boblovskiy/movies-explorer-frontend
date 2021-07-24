@@ -5,11 +5,11 @@
   align-items: center;
   width: 100%;
   margin: 0 auto;
-  background: #073042;    
+  background: none; 
 }
 
-.header_movies {
-  background: none;
+.header_landing {  
+  background: #073042;  
 }
 
 @media screen and (max-width: 898px) {
