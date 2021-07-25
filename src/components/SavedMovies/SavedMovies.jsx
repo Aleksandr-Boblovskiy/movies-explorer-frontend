@@ -1,23 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MoviesCardList from './MoviesCardList/MoviesCardList';
-import SearchForm from './SearchForm/SearchForm';
+import SearchForm from '../Movies/SearchForm/SearchForm';
+import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 
-function Movies({ movies }) {
+function SavedMovies({ movies }) {
   return (
     <section>
       <div className="movies__cont">
         <SearchForm />
         <div className="movies__line" />
         <MoviesCardList movies={movies} />
-        <button className="movies__more" type="button">Еще</button>
       </div>
     </section>
   );
 }
 
-Movies.propTypes = {
+SavedMovies.propTypes = {
   movies: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
-export default Movies;
+export default SavedMovies;

@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Link,
   NavLink, Route, Switch, useLocation,
 } from 'react-router-dom';
 import logo from '../../images/logo.svg';
@@ -10,7 +11,9 @@ function Header() {
 
   return (
     <header className={`header ${(pathname === ('/')) ? 'header_landing' : ''}`}>
-      <img className="header__logo" src={logo} alt="Логотип фильмы" />
+      <Link to="/">
+        <img className="header__logo" src={logo} alt="Логотип фильмы" />
+      </Link>
       <Switch>
         <Route path="/" exact>
           <nav className="header__menu">

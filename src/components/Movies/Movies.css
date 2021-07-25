@@ -1,9 +1,26 @@
 .movies__cont {
   max-width: 1140px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .movies__line {
   border-bottom: 1px solid #424242;
   margin: 69px 0 80px 0;
+}
+
+.movies__more {
+  width: 320px;
+  height: 36px;
+  margin: 80px auto;
+  background: #2F2F2F;
+  border-radius: 6px;
+  padding: 0;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  cursor: pointer;
 }

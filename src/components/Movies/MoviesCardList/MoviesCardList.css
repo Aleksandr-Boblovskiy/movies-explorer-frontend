@@ -1,0 +1,10 @@
+.movieslist__cont {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  row-gap: 30px;
+  column-gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+ 

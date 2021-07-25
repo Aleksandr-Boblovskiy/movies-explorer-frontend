@@ -1,0 +1,47 @@
+.card {
+  background: #222222;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card__cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 14px;
+}
+
+.card__name {
+  margin: 0;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  max-width: 280px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.card__duration {
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  color: #8B8B8B;
+  margin: 9px 0 0 0;
+}
+
+.card__save {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  background-image: url('../../../images/save.svg');
+  cursor: pointer;
+}
+
+.card__image{
+  width: 364px;
+  height: 203px;
+  object-fit: cover;
+}
