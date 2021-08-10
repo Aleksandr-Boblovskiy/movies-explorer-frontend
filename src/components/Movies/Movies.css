@@ -1,6 +1,6 @@
 .movies__cont {
   max-width: 1140px;
-  margin: 0 auto;
+  margin: 0 70px;
   display: flex;
   flex-direction: column;
 }
