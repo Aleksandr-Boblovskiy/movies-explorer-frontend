@@ -63,3 +63,7 @@
   line-height: 17px;
   margin-right: 20px;
 }
+
+.aboutme__link:hover {
+  opacity: 0.7;
+}

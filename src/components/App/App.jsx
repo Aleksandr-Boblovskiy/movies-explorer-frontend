@@ -11,6 +11,7 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import moviesdb from './movies';
+// import Preloader from '../Preloader/Preloader';
 
 function App() {
   const movies = [];
@@ -38,6 +39,10 @@ function App() {
             <Footer />
           </Route>
           <Route path="/profile">
+            <Header />
+            <Profile />
+          </Route>
+          <Route path="/profile_edit">
             <Header />
             <Profile />
           </Route>

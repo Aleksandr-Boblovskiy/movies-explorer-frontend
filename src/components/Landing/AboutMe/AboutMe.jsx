@@ -3,7 +3,7 @@ import photo from '../../../images/student.jpg';
 
 function AboutMe() {
   return (
-    <section className="aboutme">
+    <section className="aboutme" id="aboutme">
       <div className="aboutme__cont">
         <h3 className="aboutme__heading">Студент</h3>
         <div className="aboutme__line" />
@@ -19,8 +19,8 @@ function AboutMe() {
               и ушёл с постоянной работы.
             </p>
             <ul className="aboutme__links">
-              <li><a className="aboutme__link" href="#2">Facebook</a></li>
-              <li><a className="aboutme__link" href="#2">Github</a></li>
+              <li><a className="aboutme__link" href="https://www.facebook.com/profile.php?id=100014222889722" target="_blank" rel="noreferrer">Facebook</a></li>
+              <li><a className="aboutme__link" href="https://github.com/Aleksandr-Boblovskiy" target="_blank" rel="noreferrer">Github</a></li>
             </ul>
           </div>
           <img className="aboutme__photo" src={photo} alt="Фотография студента" />

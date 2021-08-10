@@ -25,11 +25,11 @@ function Header() {
             </NavLink>
           </nav>
         </Route>
-        <Route exact path="/(movies|saved-movies|profile)">
+        <Route exact path="/(movies|saved-movies|profile|profile_edit)">
           <nav className="header__menu">
-            <NavLink to="/movies" className="header__element">Фильмы</NavLink>
-            <NavLink to="/saved-movies" className="header__element">Сохраненные фильмы</NavLink>
-            <NavLink to="/profile" className="header__element">
+            <NavLink to="/movies" className="header__element" activeClassName="header__element_active">Фильмы</NavLink>
+            <NavLink to="/saved-movies" className="header__element" activeClassName="header__element_active">Сохраненные фильмы</NavLink>
+            <NavLink to="/profile" className="header__element" activeClassName="header__element_active">
               <p className="header__element-acc">Аккаунт</p>
               <img className="header__acc-img" alt="Аккаунт" src={account} />
             </NavLink>

@@ -24,3 +24,7 @@
   line-height: 15px;
   cursor: pointer;
 }
+
+.movies__more:hover {
+  opacity: 0.8;
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 function Profile() {
   return (
@@ -19,10 +19,20 @@ function Profile() {
           </p>
           <input className="profile__input" type="email" name="email" id="email" />
         </div>
-        <button className="profile__button" type="submit">Редактировать</button>
-        <Link to="/" className="profile__link">
-          <button className="profile__button profile__button_red" type="button">Выйти из аккаунта</button>
-        </Link>
+        <Switch>
+          <Route path="/profile" exact>
+            <Link to="/profile_edit" className="profile__link">
+              <button className="profile__button" type="submit">Редактировать</button>
+            </Link>
+            <Link to="/" className="profile__link">
+              <button className="profile__button profile__button_red" type="button">Выйти из аккаунта</button>
+            </Link>
+          </Route>
+          <Route path="/profile_edit">
+            <button className="profile__button profile__button_save" type="submit">Сохранить</button>
+          </Route>
+        </Switch>
+
       </form>
     </section>
   );

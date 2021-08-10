@@ -59,6 +59,10 @@
   cursor: pointer;
 }
 
+.profile__button:hover {
+  opacity: 0.8;
+}
+
 .profile__button_red {
   margin-top: 0;
   color: #EE3465;
@@ -66,4 +70,10 @@
 
 .profile__link {
   text-align: center;
+}
+
+.profile__button_save {
+  background: #3456F3;
+  border-radius: 3px;
+  height: 45px;
 }
