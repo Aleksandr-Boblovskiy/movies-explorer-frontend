@@ -1,6 +1,6 @@
 .aboutme__cont {
   max-width: 1140px;
-  margin: 0 auto;
+  margin: 0 70px;
 }
 
 .aboutme__heading {
@@ -66,4 +66,22 @@
 
 .aboutme__link:hover {
   opacity: 0.7;
+}
+
+@media screen and (max-width: 1023px){
+  .aboutme__title {
+    font-size: 40px;
+    line-height: 40px;
+    letter-spacing: -0.04em;
+  }
+  .aboutme__subtitle {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .aboutme__text {
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 85%;
+    margin-top: 20px;
+  }
 }

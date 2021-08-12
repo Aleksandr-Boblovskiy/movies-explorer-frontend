@@ -28,3 +28,9 @@
 .movies__more:hover {
   opacity: 0.8;
 }
+
+@media screen and (max-width: 1023px){
+  .movies__cont {
+    margin: 0 30px;
+  }
+}
