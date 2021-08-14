@@ -15,9 +15,39 @@ import moviesdb from './movies';
 
 function App() {
   const movies = [];
-  for (let i = 0; i < 12; i += 1) {
-    movies.push(moviesdb[i]);
+
+  if (document.documentElement.clientWidth < 768) {
+    for (let i = 0; i < 5; i += 1) {
+      movies.push(moviesdb[i]);
+    }
+  } else if (document.documentElement.clientWidth < 1024) {
+    for (let i = 0; i < 8; i += 1) {
+      movies.push(moviesdb[i]);
+    }
+  } else {
+    for (let i = 0; i < 12; i += 1) {
+      movies.push(moviesdb[i]);
+    }
   }
+
+  // window.addEventListener('resize', () => {
+  //   setTimeout(() => {
+  //     movies = [];
+  //     if (document.documentElement.clientWidth < 768) {
+  //       for (let i = 0; i < 5; i += 1) {
+  //         movies.push(moviesdb[i]);
+  //       }
+  //     } else if (document.documentElement.clientWidth < 1024) {
+  //       for (let i = 0; i < 8; i += 1) {
+  //         movies.push(moviesdb[i]);
+  //       }
+  //     } else {
+  //       for (let i = 0; i < 12; i += 1) {
+  //         movies.push(moviesdb[i]);
+  //       }
+  //     }
+  //   }, 200);
+  // });
 
   const savedmovies = [];
   for (let i = 0; i < 3; i += 1) {
