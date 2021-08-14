@@ -54,3 +54,42 @@
   }
 
 }
+
+@media screen and (max-width: 767px) {
+
+  .footer__cont {
+    margin: 0 18px;
+  }
+
+  .footer__bar {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .footer__links {
+    flex-direction: column;
+    padding: 0;
+    text-align: center;
+  }
+
+  .footer__text {
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 60px;
+  }
+
+  .footer__link {
+    font-size: 12px;
+    line-height: 15px;
+    margin: 0;
+    margin-bottom: 12px;
+  }
+
+  .footer__element {
+    margin-bottom: 12px;
+  }
+
+  .footer__copyright {
+    margin-top: 18px;
+  }
+}

@@ -10,9 +10,9 @@ function Footer() {
           <p className="footer__copyright">© 2021</p>
           <nav>
             <ul className="footer__links">
-              <li><a className="footer__link" href="https://practicum.yandex.ru/" target="_blank" rel="noreferrer">Яндекс.Практикум</a></li>
-              <li><a className="footer__link" href="https://github.com/Aleksandr-Boblovskiy" target="_blank" rel="noreferrer">Github</a></li>
-              <li><a className="footer__link" href="https://www.facebook.com/profile.php?id=100014222889722" target="_blank" rel="noreferrer">Facebook</a></li>
+              <li className="footer__element"><a className="footer__link" href="https://practicum.yandex.ru/" target="_blank" rel="noreferrer">Яндекс.Практикум</a></li>
+              <li className="footer__element"><a className="footer__link" href="https://github.com/Aleksandr-Boblovskiy" target="_blank" rel="noreferrer">Github</a></li>
+              <li className="footer__element"><a className="footer__link" href="https://www.facebook.com/profile.php?id=100014222889722" target="_blank" rel="noreferrer">Facebook</a></li>
             </ul>
           </nav>
         </div>

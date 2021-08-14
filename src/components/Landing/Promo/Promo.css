@@ -16,3 +16,20 @@
   font-weight: normal;
 }
 
+@media screen and (max-width: 1023px) {
+  .hero__text {
+    padding: 326px 19px 342px 19px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .hero__text {
+    font-size: 31px;
+    line-height: 39px;
+    letter-spacing: -0.04em;
+    padding: 207px 10px 246px 10px;
+  }
+  .hero {
+    background-size: 248px 248px;
+  }
+}
