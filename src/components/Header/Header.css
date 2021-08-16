@@ -125,7 +125,8 @@
       flex-direction: column;
       align-items: center;
       position: absolute;
-      width: 520px;
+      max-width: 520px;
+      width: 100%;
       height: 100vh;
       right: 0;
       top: 0;
@@ -182,6 +183,10 @@
 
   .header__element-landing_button {
     padding: 5px 12px;
+  }
+
+  .header__burger-cont_active {
+    width: 100%;
   }
 
 }

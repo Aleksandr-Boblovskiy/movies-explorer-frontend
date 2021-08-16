@@ -34,3 +34,17 @@
     margin: 70px 30px 0 30px;
   }
 }
+
+@media screen and (max-width: 767px){
+  .movies__cont {
+    margin: 70px 10px 0 10px;
+  }
+
+  .movies__line {
+    margin-top: 90px;
+  }
+
+  .movies__more {
+    width: 75%;
+  }
+}

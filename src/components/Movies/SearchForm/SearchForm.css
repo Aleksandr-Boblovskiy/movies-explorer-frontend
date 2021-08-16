@@ -1,19 +1,15 @@
-.search {  
-  height: 72px;
-  background: #222222;
-  box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
-  border-radius: 9px;   
-}
-
-.search__form {
-  height: 100%;
+.search__form { 
   box-sizing: border-box;  
 }
 
 .search__cont {
+  height: 72px;
+  background: #222222;
+  box-shadow: 0px 3px 14px rgba(0, 0, 0, 0.08);
+  border-radius: 9px;   
   display: flex;
   align-items: center;
-  height: 100%;    
+   
 }
 
 .search__text {
@@ -62,6 +58,11 @@
   opacity: 0.7;
 }
 
+.search__name-cont {
+  display: flex;
+  width: 100%;
+}
+
 .search__short-icon {
   background-image: url("../../../images/smalltumb.svg");
   width: 40px;
@@ -74,4 +75,27 @@
   width: 40px;
   height: 22px;
   margin-right: 14px;
+}
+
+@media screen and (max-width: 767px) {
+  .search__image {
+    display: none;
+  }
+
+  .search__cont {
+    flex-direction: column;
+   
+  }
+
+  .search__name-cont {
+    margin-top: 20px;
+  }
+
+  .search__text {
+    margin-left: 19px;
+  }  
+
+  .search__line {
+    display: none;
+  }
 }

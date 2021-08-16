@@ -24,3 +24,10 @@
   height: 22px;
   margin-right: 14px;
 }
+
+
+@media screen and (max-width: 767px) {
+  .checkbox {
+  margin: 45px 0 0 0;
+}
+}

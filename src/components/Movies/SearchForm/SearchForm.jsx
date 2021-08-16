@@ -8,11 +8,13 @@ function SearchForm() {
     <section className="search">
       <form className="search__form" autoComplete="off">
         <div className="search__cont">
-          <img src={find} alt="Найти" className="search__image" />
-          <input type="text" name="movie-search" id="movie-search" className="search__text" placeholder="Фильм" />
-          <button className="search__button" type="submit">
-            <img className="search__image-find" src={findButton} alt="Найти" />
-          </button>
+          <div className="search__name-cont">
+            <img src={find} alt="Найти" className="search__image" />
+            <input type="text" name="movie-search" id="movie-search" className="search__text" placeholder="Фильм" />
+            <button className="search__button" type="submit">
+              <img className="search__image-find" src={findButton} alt="Найти" />
+            </button>
+          </div>
           <div className="search__line" />
           <FilterCheckbox />
         </div>
