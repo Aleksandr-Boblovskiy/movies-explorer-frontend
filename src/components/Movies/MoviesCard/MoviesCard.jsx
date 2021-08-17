@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 function MoviesCard({ movie }) {
+  const [saveCard, setSaveCard] = useState(false);
+
+  function handleCardSave() {
+    setSaveCard(!saveCard);
+  }
+
   return (
     <li className="card">
       <div className="card__cont">
@@ -14,7 +20,7 @@ function MoviesCard({ movie }) {
             мин
           </p>
         </div>
-        <button className="card__save" type="button" aria-label="save" />
+        <button className={saveCard ? 'card__save card__save_active' : 'card__save'} type="button" aria-label="save" onClick={handleCardSave} />
       </div>
       <img className="card__image" src={`https://api.nomoreparties.co${movie.image.url}`} alt={movie.image.name} />
     </li>

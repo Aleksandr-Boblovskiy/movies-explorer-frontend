@@ -10,14 +10,14 @@ function Profile() {
           <p className="profile__name">
             Имя
           </p>
-          <input className="profile__input" type="text" name="name" id="name" />
+          <input className="profile__input" type="text" name="name" id="name" required />
         </div>
         <div className="profile__line" />
         <div className="profile__cont">
           <p className="profile__name">
             E-mail
           </p>
-          <input className="profile__input" type="email" name="email" id="email" />
+          <input className="profile__input" type="email" name="email" id="email" required />
         </div>
         <Switch>
           <Route path="/profile" exact>

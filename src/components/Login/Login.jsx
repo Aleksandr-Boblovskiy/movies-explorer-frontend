@@ -12,11 +12,11 @@ function Login() {
         <form className="login__form">
           <h2 className="login__title">Рады видеть!</h2>
           <p className="login__name">E-mail</p>
-          <input type="text" className="login__input" />
+          <input type="text" className="login__input" required />
           <div className="login__line" />
           <span className="login__error"> Что-то пошло не так...</span>
           <p className="login__name">Пароль</p>
-          <input type="text" className="login__input" />
+          <input type="text" className="login__input" required />
           <div className="login__line" />
           <span className="login__error"> Что-то пошло не так...</span>
           <button type="submit" className="login__button">Войти</button>

@@ -39,7 +39,7 @@ function Header() {
               <img className="header__acc-img" alt="Аккаунт" src={account} />
             </NavLink>
           </nav>
-          <img className="header__burger-logo" src={menuActive ? burgerCloseLogo : burgerLogo} alt="Меню бургер" onClick={() => setMenuActive(!menuActive)} />
+          <img className={menuActive ? 'header__burger-logo header__burger-logo_active' : 'header__burger-logo'} src={menuActive ? burgerCloseLogo : burgerLogo} alt="Меню бургер" onClick={() => setMenuActive(!menuActive)} />
           <div className={menuActive ? 'header__burger-cont_active' : 'header__burger-cont'}>
             <nav className="header__burger">
               <NavLink to="/" exact className="header__element" activeClassName="header__element_active">
