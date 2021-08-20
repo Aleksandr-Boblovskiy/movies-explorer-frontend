@@ -163,8 +163,17 @@
     }
 
   .header__element:last-child {
-      margin-top: 420px;
+     position: absolute;
+     bottom: 50px;
       margin-right: 0;      
+    }
+  
+    @media screen and (max-height:430px) {
+      .header__element:last-child {
+        position:static;
+        margin-right: 0;      
+       }
+      
     }
 
   .header__element_active {
