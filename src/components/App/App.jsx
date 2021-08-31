@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
@@ -11,24 +12,36 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import moviesdb from './movies';
+import moviesApi from '../../utils/MoviesApi';
 // import Preloader from '../Preloader/Preloader';
 
 function App() {
+  const [cards, setCards] = React.useState([]);
   const movies = [];
+  let testMovies = [];
 
-  if (document.documentElement.clientWidth < 768) {
-    for (let i = 0; i < 5; i += 1) {
-      movies.push(moviesdb[i]);
-    }
-  } else if (document.documentElement.clientWidth < 1024) {
-    for (let i = 0; i < 8; i += 1) {
-      movies.push(moviesdb[i]);
-    }
-  } else {
-    for (let i = 0; i < 12; i += 1) {
-      movies.push(moviesdb[i]);
-    }
-  }
+  moviesApi.getInitialCards()
+    .then((data) => {
+      testMovies = data;
+
+      if (document.documentElement.clientWidth < 768) {
+        for (let i = 0; i < 5; i += 1) {
+          movies.push(testMovies[i]);
+        }
+      } else if (document.documentElement.clientWidth < 1024) {
+        for (let i = 0; i < 8; i += 1) {
+          movies.push(testMovies[i]);
+        }
+      } else {
+        for (let i = 0; i < 12; i += 1) {
+          movies.push(testMovies[i]);
+        }
+      }
+      setCards(movies);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   // window.addEventListener('resize', () => {
   //   setTimeout(() => {
@@ -65,7 +78,7 @@ function App() {
           </Route>
           <Route path="/movies">
             <Header />
-            <Movies movies={movies} />
+            <Movies movies={cards} />
             <Footer />
           </Route>
           <Route path="/profile">
