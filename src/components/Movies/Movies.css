@@ -23,6 +23,11 @@
   font-size: 12px;
   line-height: 15px;
   cursor: pointer;
+  display: none;
+}
+
+.movies__more_active {
+  display: block;
 }
 
 .movies__more:hover {

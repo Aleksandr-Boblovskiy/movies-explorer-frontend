@@ -8,7 +8,7 @@ function MoviesCardList({ movies }) {
       <ul className="movieslist__cont">
         {
           movies.map((movie) => <MoviesCard movie={movie} key={movie.id} />)
-        }
+      }
       </ul>
     </section>
   );

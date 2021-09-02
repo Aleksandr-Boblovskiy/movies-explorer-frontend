@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -11,33 +14,31 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
-import moviesdb from './movies';
 import moviesApi from '../../utils/MoviesApi';
-// import Preloader from '../Preloader/Preloader';
 
 function App() {
   const [cards, setCards] = React.useState([]);
-  const movies = [];
-  let testMovies = [];
+  const [preloaderVisible, setpreloaderVisible] = React.useState(false);
+  const [notFoundText, setnotFoundText] = React.useState(false);
+  const [moreButton, setmoreButton] = React.useState(false);
+  const [filterMovies, setFilterMovies] = React.useState([]);
 
   moviesApi.getInitialCards()
     .then((data) => {
-      testMovies = data;
-
-      if (document.documentElement.clientWidth < 768) {
-        for (let i = 0; i < 5; i += 1) {
-          movies.push(testMovies[i]);
-        }
-      } else if (document.documentElement.clientWidth < 1024) {
-        for (let i = 0; i < 8; i += 1) {
-          movies.push(testMovies[i]);
-        }
-      } else {
-        for (let i = 0; i < 12; i += 1) {
-          movies.push(testMovies[i]);
-        }
-      }
-      setCards(movies);
+      localStorage.setItem('allMovies', JSON.stringify(data));
+      // if (document.documentElement.clientWidth < 768) {
+      //   for (let i = 0; i < 5; i += 1) {
+      //     movies.push(testMovies[i]);
+      //   }
+      // } else if (document.documentElement.clientWidth < 1024) {
+      //   for (let i = 0; i < 8; i += 1) {
+      //     movies.push(testMovies[i]);
+      //   }
+      // } else {
+      //   for (let i = 0; i < 12; i += 1) {
+      //     movies.push(testMovies[i]);
+      //   }
+      // }
     })
     .catch((err) => {
       console.log(err);
@@ -62,9 +63,45 @@ function App() {
   //   }, 200);
   // });
 
-  const savedmovies = [];
-  for (let i = 0; i < 3; i += 1) {
-    savedmovies.push(moviesdb[i]);
+  function searchFilm(filmName) {
+    setpreloaderVisible(true);
+    setmoreButton(false);
+    setCards([]);
+    const showMovies = [];
+    const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+    const findMovies = allMovies.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+    localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    if (findMovies.length === 0) {
+      setnotFoundText(true);
+    } else {
+      setnotFoundText(false);
+      setpreloaderVisible(false);
+    }
+    if (findMovies.length > 3) {
+      setmoreButton(true);
+      for (let i = 0; i < 3; i++) {
+        showMovies.push(findMovies.shift());
+      }
+      setFilterMovies(findMovies);
+      setpreloaderVisible(false);
+      setCards(showMovies);
+    } else {
+      setpreloaderVisible(false);
+      setCards(findMovies);
+    }
+  }
+
+  function clickMore() {
+    const showMovies = cards;
+    const findMovies = filterMovies;
+    if (findMovies.length > 3) {
+      for (let i = 0; i < 3; i++) {
+        showMovies.push(findMovies.shift());
+      }
+      setCards(showMovies);
+      setpreloaderVisible(false);
+      console.log(cards);
+    }
   }
 
   return (
@@ -78,7 +115,7 @@ function App() {
           </Route>
           <Route path="/movies">
             <Header />
-            <Movies movies={cards} />
+            <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} />
             <Footer />
           </Route>
           <Route path="/profile">
@@ -91,7 +128,7 @@ function App() {
           </Route>
           <Route path="/saved-movies">
             <Header />
-            <SavedMovies movies={savedmovies} />
+            <SavedMovies />
             <Footer />
           </Route>
           <Route path="/signup">
