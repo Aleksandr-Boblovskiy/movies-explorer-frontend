@@ -63,7 +63,7 @@ function App() {
   //   }, 200);
   // });
 
-  function searchFilm(filmName) {
+  const searchFilm = (filmName) => {
     setpreloaderVisible(true);
     setmoreButton(false);
     setCards([]);
@@ -89,20 +89,19 @@ function App() {
       setpreloaderVisible(false);
       setCards(findMovies);
     }
-  }
+  };
 
-  function clickMore() {
+  const clickMore = () => {
     const showMovies = cards;
     const findMovies = filterMovies;
     if (findMovies.length > 3) {
       for (let i = 0; i < 3; i++) {
         showMovies.push(findMovies.shift());
       }
-      setCards(showMovies);
+      setCards(showMovies.slice());
       setpreloaderVisible(false);
-      console.log(cards);
     }
-  }
+  };
 
   return (
     <div className="page">
