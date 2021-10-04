@@ -4,7 +4,7 @@ import find from '../../../images/find.svg';
 import findButton from '../../../images/find_submt.svg';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-function SearchForm({ onSearch }) {
+function SearchForm({ onSearch, filterValue, onFilterChange }) {
   const [search, setSearch] = React.useState('');
 
   function handleChangeSearch(e) {
@@ -28,7 +28,7 @@ function SearchForm({ onSearch }) {
             </button>
           </div>
           <div className="search__line" />
-          <FilterCheckbox />
+          <FilterCheckbox filterValue={filterValue} onFilterChange={onFilterChange} />
         </div>
       </form>
     </section>

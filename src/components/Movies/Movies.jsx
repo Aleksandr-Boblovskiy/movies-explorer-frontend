@@ -6,12 +6,16 @@ import SearchForm from './SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 
 function Movies({
-  movies, searchFilm, preloader, notFoundText, moreButton, clickMore,
+  movies, searchFilm, preloader, notFoundText, moreButton, clickMore, filterValue, onFilterChange,
 }) {
   return (
     <section>
       <div className="movies__cont">
-        <SearchForm onSearch={searchFilm} />
+        <SearchForm
+          onSearch={searchFilm}
+          filterValue={filterValue}
+          onFilterChange={onFilterChange}
+        />
         <div className="movies__line" />
         <Preloader active={preloader} text={notFoundText} />
         <MoviesCardList movies={movies} />

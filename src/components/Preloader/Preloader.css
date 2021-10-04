@@ -98,6 +98,10 @@
 
 .preloader__text {
     display: none;
+    color: #FFFFFF;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
 }
 
 .preloader__text_active {

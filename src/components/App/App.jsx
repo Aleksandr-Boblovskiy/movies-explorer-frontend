@@ -22,6 +22,38 @@ function App() {
   const [notFoundText, setnotFoundText] = React.useState(false);
   const [moreButton, setmoreButton] = React.useState(false);
   const [filterMovies, setFilterMovies] = React.useState([]);
+  const [filterValue, setFilterValue] = React.useState(false);
+
+  React.useEffect(() => {
+    const showMovies = [];
+    setmoreButton(false);
+    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
+
+    if (filterValue) {
+      findMovies = findMovies.filter((item) => item.duration <= 40);
+    }
+    if (findMovies.length > 12) {
+      setmoreButton(true);
+      for (let i = 0; i < 12; i++) {
+        showMovies.push(findMovies.shift());
+      }
+      setFilterMovies(findMovies.slice());
+      setpreloaderVisible(false);
+      setCards(showMovies.slice());
+    } else if (findMovies.length === 0) {
+      setnotFoundText(true);
+      setpreloaderVisible(true);
+      setCards(findMovies.slice());
+    } else {
+      setnotFoundText(false);
+      setpreloaderVisible(false);
+      setCards(findMovies.slice());
+    }
+  }, [filterValue]);
+
+  function handleChangeFilter(e) {
+    setFilterValue(e.target.checked);
+  }
 
   moviesApi.getInitialCards()
     .then((data) => {
@@ -69,25 +101,26 @@ function App() {
     setCards([]);
     const showMovies = [];
     const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-    const findMovies = allMovies.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+    let findMovies = allMovies.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
     localStorage.setItem('findMovies', JSON.stringify(findMovies));
-    if (findMovies.length === 0) {
-      setnotFoundText(true);
-    } else {
-      setnotFoundText(false);
-      setpreloaderVisible(false);
+    if (filterValue) {
+      findMovies = findMovies.filter((item) => item.duration <= 40);
     }
-    if (findMovies.length > 3) {
+    if (findMovies.length > 12) {
       setmoreButton(true);
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 12; i++) {
         showMovies.push(findMovies.shift());
       }
       setFilterMovies(findMovies);
       setpreloaderVisible(false);
-      setCards(showMovies);
+      setCards(showMovies.slice());
+    } else if (findMovies.length === 0) {
+      setnotFoundText(true);
+      setCards(findMovies.slice());
     } else {
+      setnotFoundText(false);
       setpreloaderVisible(false);
-      setCards(findMovies);
+      setCards(findMovies.slice());
     }
   };
 
@@ -99,7 +132,12 @@ function App() {
         showMovies.push(findMovies.shift());
       }
       setCards(showMovies.slice());
-      setpreloaderVisible(false);
+    } else {
+      for (let i = 0; i < findMovies.length; i++) {
+        showMovies.push(findMovies.shift());
+      }
+      setCards(showMovies.slice());
+      setmoreButton(false);
     }
   };
 
@@ -114,7 +152,7 @@ function App() {
           </Route>
           <Route path="/movies">
             <Header />
-            <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} />
+            <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
             <Footer />
           </Route>
           <Route path="/profile">
