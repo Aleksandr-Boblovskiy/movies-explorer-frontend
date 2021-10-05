@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
 /* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {
+  Route, Switch, useHistory, Redirect,
+} from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
 import Main from '../Landing/Main/Main';
@@ -14,7 +17,9 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
-import moviesApi from '../../utils/MoviesApi';
+import MoviesApi from '../../utils/MoviesApi';
+import * as MainApi from '../../utils/MainApi';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -23,6 +28,11 @@ function App() {
   const [moreButton, setmoreButton] = React.useState(false);
   const [filterMovies, setFilterMovies] = React.useState([]);
   const [filterValue, setFilterValue] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  // const [registredStatus, setRegistredStatus] = React.useState();
+
+  const history = useHistory();
 
   React.useEffect(() => {
     const showMovies = [];
@@ -55,7 +65,7 @@ function App() {
     setFilterValue(e.target.checked);
   }
 
-  moviesApi.getInitialCards()
+  MoviesApi.getInitialCards()
     .then((data) => {
       localStorage.setItem('allMovies', JSON.stringify(data));
       // if (document.documentElement.clientWidth < 768) {
@@ -141,6 +151,61 @@ function App() {
     }
   };
 
+  // авторизация
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      MainApi.checkToken(token)
+        .then((res) => {
+          setEmail(res.data.email);
+          setLoggedIn(true);
+          history.push('/movies');
+        })
+        .catch(() => {
+          localStorage.removeItem('jwt');
+        });
+    }
+  }, [history]);
+
+  function onRegister({ email, password, name }) {
+    MainApi.register(email, password, name)
+      .then((res) => {
+        history.push('/signin');
+        // setRegistredStatus({
+        //   text: 'Вы успешно зарегистрировались',
+        //   iconType: true,
+        // });
+      })
+      .catch(() => {
+        // setRegistredStatus({
+        //   text: 'Что-то пошло не так!  Попробуйте ещё раз.',
+        //   iconType: false,
+        // });
+      });
+  }
+
+  function onLogin({ email, password }) {
+    MainApi.login(email, password)
+      .then((res) => {
+        setLoggedIn(true);
+        setEmail(email);
+        history.push('/movies');
+      })
+      .catch(() => {
+        // setRegistredStatus({
+        //   text: 'Что-то пошло не так! Попробуйте ещё раз.',
+        //   iconType: false,
+        // });
+      });
+  }
+
+  function onSignOut() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    history.push('/signin');
+  }
+
   return (
     <div className="page">
       <div className="page__container">
@@ -150,31 +215,32 @@ function App() {
             <Main />
             <Footer />
           </Route>
-          <Route path="/movies">
+          <ProtectedRoute path="/movies">
             <Header />
             <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
             <Footer />
-          </Route>
-          <Route path="/profile">
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile">
             <Header />
             <Profile />
-          </Route>
-          <Route path="/profile_edit">
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile_edit">
             <Header />
             <Profile />
-          </Route>
-          <Route path="/saved-movies">
+          </ProtectedRoute>
+          <ProtectedRoute path="/saved-movies">
             <Header />
             <SavedMovies />
             <Footer />
-          </Route>
+          </ProtectedRoute>
           <Route path="/signup">
-            <Register />
+            <Register onRegister={onRegister} />
           </Route>
           <Route path="/signin">
-            <Login />
+            <Login onLogin={onLogin} />
           </Route>
           <Route path="*">
+            {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
             <NotFound />
           </Route>
         </Switch>
