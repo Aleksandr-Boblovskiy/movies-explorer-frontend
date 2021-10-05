@@ -1,5 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
-const URL = 'https://auth.nomoreparties.co';
+const URL = 'http://api.kinopoisk.nomoredomains.rocks';
 
 const resultCheck = (res) => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 
