@@ -1,23 +1,57 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile() {
+function Profile(props) {
+  const [name, setName] = React.useState();
+  const [email, setEmail] = React.useState();
+
+  // Подписка на контекст
+  const currentUser = React.useContext(CurrentUserContext);
+
+  // После загрузки текущего пользователя из API
+  // его данные будут использованы в управляемых компонентах.
+  React.useEffect(() => {
+    setName(currentUser.name);
+    setEmail(currentUser.email);
+  }, [currentUser]);
+
+  function handleChangeName(e) {
+    setName(e.target.value);
+  }
+
+  function handleChangeEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    // Запрещаем браузеру переходить по адресу формы
+    e.preventDefault();
+
+    // Передаём значения управляемых компонентов во внешний обработчик
+    props.onUpdateUser({
+      name,
+      email,
+    });
+  }
+
   return (
     <section className="profile">
-      <h2 className="profile__title">Привет, Виталий!</h2>
-      <form className="profile__form" autoComplete="off">
+      <h2 className="profile__title">{`Привет, ${name}!`}</h2>
+      <form className="profile__form" autoComplete="off" onSubmit={handleSubmit}>
         <div className="profile__cont">
           <p className="profile__name">
             Имя
           </p>
-          <input className="profile__input" type="text" name="name" id="name" required />
+          <input className="profile__input" minLength="2" value={name} type="text" name="name" id="name" onChange={handleChangeName} required />
         </div>
         <div className="profile__line" />
         <div className="profile__cont">
           <p className="profile__name">
             E-mail
           </p>
-          <input className="profile__input" type="email" name="email" id="email" required />
+          <input className="profile__input" type="email" value={email} name="email" id="email" onChange={handleChangeEmail} required />
         </div>
         <Switch>
           <Route path="/profile" exact>

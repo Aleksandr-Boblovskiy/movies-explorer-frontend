@@ -18,6 +18,7 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import MoviesApi from '../../utils/MoviesApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as MainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
@@ -30,6 +31,7 @@ function App() {
   const [filterValue, setFilterValue] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [email, setEmail] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({});
   // const [registredStatus, setRegistredStatus] = React.useState();
 
   const history = useHistory();
@@ -151,6 +153,16 @@ function App() {
     }
   };
 
+  function handleUpdateUser(info) {
+    MainApi.setUserInfo(info)
+      .then((userData) => {
+        setCurrentUser(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   // авторизация
 
   React.useEffect(() => {
@@ -209,41 +221,44 @@ function App() {
   return (
     <div className="page">
       <div className="page__container">
-        <Switch>
-          <Route exact path="/">
-            <Header />
-            <Main />
-            <Footer />
-          </Route>
-          <ProtectedRoute path="/movies">
-            <Header />
-            <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
-            <Footer />
-          </ProtectedRoute>
-          <ProtectedRoute path="/profile">
-            <Header />
-            <Profile />
-          </ProtectedRoute>
-          <ProtectedRoute path="/profile_edit">
-            <Header />
-            <Profile />
-          </ProtectedRoute>
-          <ProtectedRoute path="/saved-movies">
-            <Header />
-            <SavedMovies />
-            <Footer />
-          </ProtectedRoute>
-          <Route path="/signup">
-            <Register onRegister={onRegister} />
-          </Route>
-          <Route path="/signin">
-            <Login onLogin={onLogin} />
-          </Route>
-          <Route path="*">
-            {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
-            <NotFound />
-          </Route>
-        </Switch>
+        <CurrentUserContext.Provider value={currentUser}>
+
+          <Switch>
+            <Route exact path="/">
+              <Header />
+              <Main />
+              <Footer />
+            </Route>
+            <ProtectedRoute path="/movies">
+              <Header />
+              <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
+              <Footer />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile">
+              <Header />
+              <Profile onUpdateUser={handleUpdateUser} />
+            </ProtectedRoute>
+            <ProtectedRoute path="/profile_edit">
+              <Header />
+              <Profile onUpdateUser={handleUpdateUser} />
+            </ProtectedRoute>
+            <ProtectedRoute path="/saved-movies">
+              <Header />
+              <SavedMovies />
+              <Footer />
+            </ProtectedRoute>
+            <Route path="/signup">
+              <Register onRegister={onRegister} />
+            </Route>
+            <Route path="/signin">
+              <Login onLogin={onLogin} />
+            </Route>
+            <Route path="*">
+              {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
+              <NotFound />
+            </Route>
+          </Switch>
+        </CurrentUserContext.Provider>
       </div>
     </div>
   );
