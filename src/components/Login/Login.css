@@ -47,7 +47,8 @@
   line-height: 12px;
   color: #EE3465;
   display: block;
-  margin-bottom: 6px;   
+  margin-bottom: 6px;
+  min-height: 24px;   
 }
 
 .login__button {

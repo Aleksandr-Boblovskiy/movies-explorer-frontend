@@ -1,23 +1,37 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 
 function Login({ onLogin }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value);
-  }
+  const handleChange = (event) => {
+    const { target } = event;
+    const { name } = target;
+    const { value } = target;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest('form').checkValidity());
+  };
 
-  function handlePasswordChange(evt) {
-    setPassword(evt.target.value);
-  }
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setValues, setErrors, setIsValid],
+  );
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onLogin({ email, password });
+    if (isValid) {
+      onLogin(values);
+      resetForm();
+    }
   }
 
   return (
@@ -29,13 +43,13 @@ function Login({ onLogin }) {
         <form className="login__form" onSubmit={handleSubmit}>
           <h2 className="login__title">Рады видеть!</h2>
           <p className="login__name">E-mail</p>
-          <input type="email" className="login__input" onChange={handleEmailChange} required />
+          <input type="email" name="email" className="login__input" onChange={handleChange} required />
           <div className="login__line" />
-          <span className="login__error"> Что-то пошло не так...</span>
+          <span className="login__error">{errors.email}</span>
           <p className="login__name">Пароль</p>
-          <input type="password" className="login__input" onChange={handlePasswordChange} required />
+          <input type="password" name="password" minLength="8" className="login__input" onChange={handleChange} required />
           <div className="login__line" />
-          <span className="login__error"> Что-то пошло не так...</span>
+          <span className="login__error">{errors.password}</span>
           <button type="submit" className="login__button">Войти</button>
           <p className="login__text">
             Уже зарегистрированы?

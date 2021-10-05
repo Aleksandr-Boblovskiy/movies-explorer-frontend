@@ -1,28 +1,42 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 
 function Register({ onRegister }) {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [values, setValues] = React.useState({});
+  const [errors, setErrors] = React.useState({});
+  const [isValid, setIsValid] = React.useState(false);
 
-  function handleEmailChange(evt) {
-    setEmail(evt.target.value);
-  }
+  const handleChange = (event) => {
+    const { target } = event;
+    const { name } = target;
+    const { value } = target;
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
+    setIsValid(target.closest('form').checkValidity());
+  };
 
-  function handlePasswordChange(evt) {
-    setPassword(evt.target.value);
-  }
+  const resetForm = useCallback(
+    (newValues = {}, newErrors = {}, newIsValid = false) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [setValues, setErrors, setIsValid],
+  );
 
-  function handleNameChange(evt) {
-    setName(evt.target.value);
-  }
+  // return {
+  //   values, handleChange, errors, isValid, resetForm,
+  // };
 
   function handleSubmit(e) {
     e.preventDefault();
-    onRegister({ email, password, name });
+    if (isValid) {
+      onRegister(values);
+      resetForm();
+    }
   }
 
   return (
@@ -34,17 +48,17 @@ function Register({ onRegister }) {
         <form className="register__form" onSubmit={handleSubmit}>
           <h2 className="register__title">Добро пожаловать!</h2>
           <p className="register__name">Имя</p>
-          <input type="text" className="register__input" onChange={handleNameChange} required />
+          <input type="text" name="name" minLength="2" className="register__input" onChange={handleChange} required />
           <div className="register__line" />
-          <span className="register__error">Что-то пошло не так...</span>
+          <span className="register__error">{errors.name}</span>
           <p className="register__name">E-mail</p>
-          <input type="email" className="register__input" onChange={handleEmailChange} required />
+          <input type="email" name="email" className="register__input" onChange={handleChange} required />
           <div className="register__line" />
-          <span className="register__error"> Что-то пошло не так...</span>
+          <span className="register__error">{errors.email}</span>
           <p className="register__name">Пароль</p>
-          <input type="password" className="register__input" onChange={handlePasswordChange} required />
+          <input type="password" name="password" minLength="8" className="register__input" onChange={handleChange} required />
           <div className="register__line" />
-          <span className="register__error"> Что-то пошло не так...</span>
+          <span className="register__error">{errors.password}</span>
           <button type="submit" className="register__button">Зарегистрироваться</button>
           <p className="register__text">
             Уже зарегистрированы?
