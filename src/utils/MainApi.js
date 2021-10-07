@@ -1,5 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
-const URL = 'http://api.kinopoisk.nomoredomains.rocks';
+const URL = 'https://api.kinopoisk.nomoredomains.rocks';
 
 const resultCheck = (res) => (res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`));
 
@@ -12,6 +12,7 @@ export const register = (email, password, name) => fetch(`${URL}/signup`, {
   body: JSON.stringify({ email, password, name }),
 })
   .then(resultCheck);
+
 export const login = (email, password) => fetch(`${URL}/signin`, {
   method: 'POST',
   headers: {
@@ -25,6 +26,7 @@ export const login = (email, password) => fetch(`${URL}/signin`, {
     localStorage.setItem('jwt', data.token);
     return data;
   });
+
 export const checkToken = (token) => fetch(`${URL}/users/me`, {
   method: 'GET',
   headers: {

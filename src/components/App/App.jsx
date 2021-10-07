@@ -41,25 +41,26 @@ function App() {
     setmoreButton(false);
     let findMovies = JSON.parse(localStorage.getItem('findMovies'));
 
-    if (filterValue) {
+    if (filterValue && findMovies) {
       findMovies = findMovies.filter((item) => item.duration <= 40);
-    }
-    if (findMovies.length > 12) {
-      setmoreButton(true);
-      for (let i = 0; i < 12; i++) {
-        showMovies.push(findMovies.shift());
+
+      if (findMovies.length > 12) {
+        setmoreButton(true);
+        for (let i = 0; i < 12; i++) {
+          showMovies.push(findMovies.shift());
+        }
+        setFilterMovies(findMovies.slice());
+        setpreloaderVisible(false);
+        setCards(showMovies.slice());
+      } else if (findMovies.length === 0) {
+        setnotFoundText(true);
+        setpreloaderVisible(true);
+        setCards(findMovies.slice());
+      } else {
+        setnotFoundText(false);
+        setpreloaderVisible(false);
+        setCards(findMovies.slice());
       }
-      setFilterMovies(findMovies.slice());
-      setpreloaderVisible(false);
-      setCards(showMovies.slice());
-    } else if (findMovies.length === 0) {
-      setnotFoundText(true);
-      setpreloaderVisible(true);
-      setCards(findMovies.slice());
-    } else {
-      setnotFoundText(false);
-      setpreloaderVisible(false);
-      setCards(findMovies.slice());
     }
   }, [filterValue]);
 
@@ -153,15 +154,15 @@ function App() {
     }
   };
 
-  function handleUpdateUser(info) {
-    MainApi.setUserInfo(info)
-      .then((userData) => {
-        setCurrentUser(userData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // function handleUpdateUser(info) {
+  //   MainApi.setUserInfo(info)
+  //     .then((userData) => {
+  //       setCurrentUser(userData);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
   // авторизация
 
@@ -170,7 +171,7 @@ function App() {
     if (token) {
       MainApi.checkToken(token)
         .then((res) => {
-          setEmail(res.data.email);
+          setEmail(res.email);
           setLoggedIn(true);
           history.push('/movies');
         })
@@ -229,20 +230,20 @@ function App() {
               <Main />
               <Footer />
             </Route>
-            <ProtectedRoute path="/movies">
+            <ProtectedRoute path="/movies" loggedIn={loggedIn}>
               <Header />
               <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
               <Footer />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile">
+            <ProtectedRoute path="/profile" loggedIn={loggedIn}>
               <Header />
-              <Profile onUpdateUser={handleUpdateUser} />
+              <Profile />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile_edit">
+            <ProtectedRoute path="/profile_edit" loggedIn={loggedIn}>
               <Header />
-              <Profile onUpdateUser={handleUpdateUser} />
+              <Profile />
             </ProtectedRoute>
-            <ProtectedRoute path="/saved-movies">
+            <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header />
               <SavedMovies />
               <Footer />
