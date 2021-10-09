@@ -96,6 +96,7 @@ function Profile(props) {
           <input className="profile__input" type="email" value={values.email} name="email" id="email" autoComplete="off" onChange={handleChange} required />
           <span className="profile__error">{errors.email}</span>
         </div>
+        <p className="profile__serverror">{props.errMsg}</p>
         <Switch>
           <Route path="/profile" exact>
             {/* <button className="profile__button" type="submit">Редактировать</button> */}

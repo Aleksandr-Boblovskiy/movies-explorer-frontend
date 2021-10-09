@@ -252,16 +252,17 @@ function App() {
   }
 
   function onUpdateUser({ email, name }) {
+    setTextErr('');
     MainApi.patchUser(email, name)
       .then((res) => {
         setCurrentUser({ email: res.email, name: res.name });
       })
       .catch((err) => {
         if (err === 'Ошибка: 400') {
-          setTextErr('При авторизации произошла ошибка.');
+          setTextErr('При обновлении профиля произошла ошибка.');
         }
-        if (err === 'Ошибка: 401') {
-          setTextErr('Вы ввели неправильный логин или пароль.');
+        if (err === 'Ошибка: 409') {
+          setTextErr('Пользователь с таким email уже существует.');
         }
       });
   }
@@ -291,7 +292,7 @@ function App() {
             </ProtectedRoute>
             <ProtectedRoute path="/profile" loggedIn={loggedIn}>
               <Header />
-              <Profile onSignOut={onSignOut} onUpdateUser={onUpdateUser} />
+              <Profile onSignOut={onSignOut} onUpdateUser={onUpdateUser} errMsg={textErr} />
             </ProtectedRoute>
             {/* <ProtectedRoute path="/profile_edit" loggedIn={loggedIn}>
               <Header />

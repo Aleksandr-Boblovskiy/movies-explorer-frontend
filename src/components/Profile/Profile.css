@@ -52,7 +52,7 @@
 }
 
 .profile__button {
-  margin: 220px 0 16px 0;
+  margin: 20px 0 16px 0;
   background: none;
   border: none;
   color: #fff;
@@ -92,6 +92,14 @@
   display: block; 
   min-height: 24px;
   margin-top: 10px;   
+}
+.profile__serverror {
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #EE3465;
+  margin-top: 190px;
+  min-height: 13px;
 }
 
 @media screen and (max-width:430px) {
