@@ -30,7 +30,7 @@ function App() {
   const [filterMovies, setFilterMovies] = React.useState([]);
   const [filterValue, setFilterValue] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [email, setEmail] = React.useState('');
+  const [textErr, setTextErr] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
   // const [registredStatus, setRegistredStatus] = React.useState();
 
@@ -41,9 +41,10 @@ function App() {
     setmoreButton(false);
     let findMovies = JSON.parse(localStorage.getItem('findMovies'));
 
-    if (filterValue && findMovies) {
-      findMovies = findMovies.filter((item) => item.duration <= 40);
-
+    if (findMovies) {
+      if (filterValue) {
+        findMovies = findMovies.filter((item) => item.duration <= 40);
+      }
       if (findMovies.length > 12) {
         setmoreButton(true);
         for (let i = 0; i < 12; i++) {
@@ -167,11 +168,34 @@ function App() {
   // авторизация
 
   React.useEffect(() => {
+    if (loggedIn) {
+      MainApi.getUserInfo()
+        .then((userData) => {
+          setCurrentUser(userData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      // api.getInitialCards()
+      //   .then((data) => {
+      //     setCards(data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+    }
+  }, [loggedIn]);
+
+  React.useEffect(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
       MainApi.checkToken(token)
         .then((res) => {
-          setEmail(res.email);
+          setCurrentUser({
+            email: res.email,
+            name: res.name,
+          });
           setLoggedIn(true);
           history.push('/movies');
         })
@@ -182,41 +206,71 @@ function App() {
   }, [history]);
 
   function onRegister({ email, password, name }) {
+    setTextErr('');
     MainApi.register(email, password, name)
       .then((res) => {
-        history.push('/signin');
-        // setRegistredStatus({
-        //   text: 'Вы успешно зарегистрировались',
-        //   iconType: true,
-        // });
+        MainApi.login(email, password)
+          .then((res) => {
+            setLoggedIn(true);
+            setCurrentUser({ email, name });
+            history.push('/movies');
+          })
+          .catch((err) => {
+            if (err === 'Ошибка: 400') {
+              setTextErr('При авторизации произошла ошибка.');
+            }
+            if (err === 'Ошибка: 401') {
+              setTextErr('Вы ввели неправильный логин или пароль.');
+            }
+          });
       })
-      .catch(() => {
-        // setRegistredStatus({
-        //   text: 'Что-то пошло не так!  Попробуйте ещё раз.',
-        //   iconType: false,
-        // });
+      .catch((err) => {
+        if (err === 'Ошибка: 400') {
+          setTextErr('При регистрации пользователя произошла ошибка.');
+        }
+        if (err === 'Ошибка: 409') {
+          setTextErr('Пользователь с таким email уже существует.');
+        }
       });
   }
 
   function onLogin({ email, password }) {
+    setTextErr('');
     MainApi.login(email, password)
       .then((res) => {
         setLoggedIn(true);
-        setEmail(email);
         history.push('/movies');
       })
-      .catch(() => {
-        // setRegistredStatus({
-        //   text: 'Что-то пошло не так! Попробуйте ещё раз.',
-        //   iconType: false,
-        // });
+      .catch((err) => {
+        if (err === 'Ошибка: 400') {
+          setTextErr('При авторизации произошла ошибка.');
+        }
+        if (err === 'Ошибка: 401') {
+          setTextErr('Вы ввели неправильный логин или пароль.');
+        }
+      });
+  }
+
+  function onUpdateUser({ email, name }) {
+    MainApi.patchUser(email, name)
+      .then((res) => {
+        setCurrentUser({ email: res.email, name: res.name });
+      })
+      .catch((err) => {
+        if (err === 'Ошибка: 400') {
+          setTextErr('При авторизации произошла ошибка.');
+        }
+        if (err === 'Ошибка: 401') {
+          setTextErr('Вы ввели неправильный логин или пароль.');
+        }
       });
   }
 
   function onSignOut() {
+    setTextErr('');
     localStorage.removeItem('jwt');
     setLoggedIn(false);
-    history.push('/signin');
+    history.push('/');
   }
 
   return (
@@ -237,22 +291,22 @@ function App() {
             </ProtectedRoute>
             <ProtectedRoute path="/profile" loggedIn={loggedIn}>
               <Header />
-              <Profile />
+              <Profile onSignOut={onSignOut} onUpdateUser={onUpdateUser} />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile_edit" loggedIn={loggedIn}>
+            {/* <ProtectedRoute path="/profile_edit" loggedIn={loggedIn}>
               <Header />
-              <Profile />
-            </ProtectedRoute>
+              <Profile onSignOut={onSignOut} />
+            </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header />
               <SavedMovies />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">
-              <Register onRegister={onRegister} />
+              <Register onRegister={onRegister} errMsg={textErr} />
             </Route>
             <Route path="/signin">
-              <Login onLogin={onLogin} />
+              <Login onLogin={onLogin} errMsg={textErr} />
             </Route>
             <Route path="*">
               {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}

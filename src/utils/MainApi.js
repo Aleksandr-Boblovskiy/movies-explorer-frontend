@@ -36,3 +36,24 @@ export const checkToken = (token) => fetch(`${URL}/users/me`, {
   },
 })
   .then(resultCheck);
+
+export const getUserInfo = () => fetch(`${URL}/users/me`, {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },
+})
+  .then(resultCheck);
+
+export const patchUser = (email, name) => fetch(`${URL}/users/me`, {
+  method: 'PATCH',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },
+  body: JSON.stringify({ email, name }),
+})
+  .then(resultCheck);

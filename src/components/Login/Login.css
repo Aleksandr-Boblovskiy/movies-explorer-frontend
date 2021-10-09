@@ -52,7 +52,7 @@
 }
 
 .login__button {
-  margin: 128px 0 16px 0;
+  margin: 20px 0 16px 0;
   width: 100%;
   color: #fff;
   background: #4285F4;
@@ -72,6 +72,19 @@
   opacity: 0.8;
 }
 
+.login__button_disabled {
+  background:#424242;
+  cursor: auto; 
+}
+
+.login__button_disabled:hover {
+  opacity: 1;
+}
+
+.login__button_margin {
+  margin-top: 7px;
+}
+
 .login__text {
   font-size: 14px;
   line-height: 17px;
@@ -89,6 +102,15 @@
 
 .login__link:hover {
   opacity: 0.7;
+}
+
+.login__serverror {
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #EE3465;
+  margin-top: 190px;
+  min-height: 13px;
 }
 
 @media screen and (max-width:430px) {

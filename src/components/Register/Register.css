@@ -52,7 +52,7 @@
 }
 
 .register__button {
-  margin: 128px 0 16px 0;
+  margin: 20px 0 16px 0;
   width: 100%;
   color: #fff;
   background: #4285F4;
@@ -70,6 +70,24 @@
 
 .register__button:hover {
   opacity: 0.8;
+}
+
+.register__button_disabled {
+  background:#424242;
+  cursor: auto;
+}
+
+.register__button_disabled:hover {
+  opacity: 1;
+}
+
+.register__serverror {
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  color: #EE3465;
+  margin-top: 190px;
+  min-height: 13px;
 }
 
 .register__text {
