@@ -6,12 +6,13 @@ import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 
 function SavedMovies({
-  movies, preloader, notFoundText, filterValue, onFilterChange, onDeleteCard,
+  movies, searchFilm, preloader, notFoundText, filterValue, onFilterChange, onDeleteCard,
 }) {
   return (
     <section>
       <div className="movies__cont">
         <SearchForm
+          onSearch={searchFilm}
           filterValue={filterValue}
           onFilterChange={onFilterChange}
         />

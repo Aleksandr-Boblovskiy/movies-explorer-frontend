@@ -305,6 +305,46 @@ function App() {
       });
   };
 
+  const searchFilmSave = (filmName) => {
+    setpreloaderVisible(true);
+    MainApi.getMovies()
+      .then((data) => {
+        const tmpArr = [];
+        data.forEach((item) => {
+          if (item.owner === currentUser._id) {
+            tmpArr.push(item);
+          }
+        });
+        const findCards = tmpArr.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+        if (findCards.length === 0) {
+          setnotFoundText(true);
+        } else {
+          setnotFoundText(false);
+          setpreloaderVisible(false);
+        }
+        setSaveVisuCards(findCards);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const headerClickSave = () => {
+    MainApi.getMovies()
+      .then((data) => {
+        const tmpArr = [];
+        data.forEach((item) => {
+          if (item.owner === currentUser._id) {
+            tmpArr.push(item);
+          }
+          setSaveVisuCards(tmpArr.slice());
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   // авторизация
 
   React.useEffect(() => {
@@ -326,7 +366,7 @@ function App() {
               tmpArr.push(item);
             }
           });
-          setSaveVisuCards(tmpArr);
+          setSaveVisuCards(tmpArr.slice());
         })
         .catch((err) => {
           console.log(err);
@@ -430,7 +470,7 @@ function App() {
               <Footer />
             </Route>
             <ProtectedRoute path="/movies" loggedIn={loggedIn}>
-              <Header />
+              <Header onClickSave={headerClickSave} />
               <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} onSaveCard={handleSaveCard} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
@@ -443,8 +483,8 @@ function App() {
               <Profile onSignOut={onSignOut} />
             </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
-              <Header />
-              <SavedMovies movies={saveVisuCards} preloader={preloaderVisible} notFoundText={notFoundText} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
+              <Header onClickSave={headerClickSave} />
+              <SavedMovies movies={saveVisuCards} searchFilm={searchFilmSave} preloader={preloaderVisible} notFoundText={notFoundText} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">
