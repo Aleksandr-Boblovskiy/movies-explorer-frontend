@@ -57,3 +57,34 @@ export const patchUser = (email, name) => fetch(`${URL}/users/me`, {
   body: JSON.stringify({ email, name }),
 })
   .then(resultCheck);
+
+export const getMovies = () => fetch(`${URL}/movies`, {
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },
+})
+  .then(resultCheck);
+
+export const saveMovie = (movie) => fetch(`${URL}/movies`, {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },
+  body: JSON.stringify(movie),
+})
+  .then(resultCheck);
+
+export const deleteMovie = (id) => fetch(`${URL}/movies/${id}`, {
+  method: 'DELETE',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+  },
+})
+  .then(resultCheck);

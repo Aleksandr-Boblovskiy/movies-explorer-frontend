@@ -7,6 +7,7 @@ import Preloader from '../Preloader/Preloader';
 
 function Movies({
   movies, searchFilm, preloader, notFoundText, moreButton, clickMore, filterValue, onFilterChange,
+  onSaveCard, onDeleteCard,
 }) {
   return (
     <section>
@@ -18,7 +19,7 @@ function Movies({
         />
         <div className="movies__line" />
         <Preloader active={preloader} text={notFoundText} />
-        <MoviesCardList movies={movies} />
+        <MoviesCardList movies={movies} onSaveCard={onSaveCard} onDeleteCard={onDeleteCard} />
         <button className={`movies__more ${moreButton ? 'movies__more_active' : ''}`} type="button" onClick={clickMore}>Еще</button>
       </div>
     </section>

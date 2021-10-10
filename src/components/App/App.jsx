@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable no-plusplus */
@@ -24,6 +26,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [cards, setCards] = React.useState([]);
+  const [saveCards, setSaveCards] = React.useState([]);
   const [preloaderVisible, setpreloaderVisible] = React.useState(false);
   const [notFoundText, setnotFoundText] = React.useState(false);
   const [moreButton, setmoreButton] = React.useState(false);
@@ -116,6 +119,32 @@ function App() {
     const showMovies = [];
     const allMovies = JSON.parse(localStorage.getItem('allMovies'));
     let findMovies = allMovies.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+    const newMass = [];
+    findMovies.forEach((movie) => {
+      const saveMovie = {};
+      saveMovie.country = movie.country;
+      saveMovie.director = movie.director;
+      saveMovie.duration = movie.duration;
+      saveMovie.year = movie.year;
+      saveMovie.description = movie.description;
+      saveMovie.thumbnail = `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
+      saveMovie.movieId = movie.id;
+      // saveMovie.owner = currentUser._id;
+      saveMovie.trailer = movie.trailerLink;
+      saveMovie.image = `https://api.nomoreparties.co${movie.image.url}`;
+      saveMovie.nameRU = movie.nameRU;
+      saveMovie.nameEN = movie.nameEN;
+      if (saveCards.findIndex((item) => {
+        if (item.movieId === saveMovie.movieId && item.owner === currentUser._id) {
+          return true;
+        }
+        return false;
+      }) !== -1) {
+        saveMovie.save = true;
+      }
+      newMass.push(saveMovie);
+    });
+    findMovies = newMass;
     localStorage.setItem('findMovies', JSON.stringify(findMovies));
     if (filterValue) {
       findMovies = findMovies.filter((item) => item.duration <= 40);
@@ -155,15 +184,77 @@ function App() {
     }
   };
 
-  // function handleUpdateUser(info) {
-  //   MainApi.setUserInfo(info)
-  //     .then((userData) => {
-  //       setCurrentUser(userData);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
+  const handleSaveCard = (movie) => {
+    const saveMovie = movie;
+    // saveMovie.country = movie.country;
+    // saveMovie.director = movie.director;
+    // saveMovie.duration = movie.duration;
+    // saveMovie.year = movie.year;
+    // saveMovie.description = movie.description;
+    // saveMovie.thumbnail = `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
+    // saveMovie.movieId = movie.id;
+    // // saveMovie.owner = currentUser._id;
+    // saveMovie.trailer = movie.trailerLink;
+    // saveMovie.image = `https://api.nomoreparties.co${movie.image.url}`;
+    // saveMovie.nameRU = movie.nameRU;
+    // saveMovie.nameEN = movie.nameEN;
+    delete saveMovie.save;
+    if (saveCards.findIndex((item) => {
+      if (item.movieId === saveMovie.movieId && item.owner === currentUser._id) {
+        return true;
+      }
+      return false;
+    }) === -1) {
+      MainApi.saveMovie(saveMovie)
+        .then((card) => {
+          const tempCards = saveCards;
+          tempCards.push(card);
+          setSaveCards(tempCards);
+          const index = cards.findIndex((item) => {
+            if (item.movieId === card.movieId && card.owner === currentUser._id) {
+              return true;
+            }
+            return false;
+          });
+          cards[index].save = true;
+          setCards(cards.slice());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handleDeleteCard = (movie) => {
+    const moviedel = saveCards.find((item) => {
+      if (item.movieId === movie.movieId && item.owner === currentUser._id) {
+        return true;
+      }
+      return false;
+    });
+    const { _id } = moviedel;
+    MainApi.deleteMovie(_id)
+      .then((card) => {
+        const index = cards.findIndex((item) => {
+          if (item.movieId === card.message.movieId && card.message.owner === currentUser._id) {
+            return true;
+          }
+          return false;
+        });
+        cards[index].save = false;
+        setCards(cards.slice());
+        MainApi.getMovies()
+          .then((data) => {
+            setSaveCards(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // авторизация
 
@@ -177,13 +268,13 @@ function App() {
           console.log(err);
         });
 
-      // api.getInitialCards()
-      //   .then((data) => {
-      //     setCards(data);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      MainApi.getMovies()
+        .then((data) => {
+          setSaveCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [loggedIn]);
 
@@ -192,10 +283,7 @@ function App() {
     if (token) {
       MainApi.checkToken(token)
         .then((res) => {
-          setCurrentUser({
-            email: res.email,
-            name: res.name,
-          });
+          setCurrentUser(res);
           setLoggedIn(true);
           history.push('/movies');
         })
@@ -212,7 +300,7 @@ function App() {
         MainApi.login(email, password)
           .then((res) => {
             setLoggedIn(true);
-            setCurrentUser({ email, name });
+            // setCurrentUser({ email, name });
             history.push('/movies');
           })
           .catch((err) => {
@@ -287,7 +375,7 @@ function App() {
             </Route>
             <ProtectedRoute path="/movies" loggedIn={loggedIn}>
               <Header />
-              <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} />
+              <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} onSaveCard={handleSaveCard} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
             <ProtectedRoute path="/profile" loggedIn={loggedIn}>
@@ -300,7 +388,7 @@ function App() {
             </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header />
-              <SavedMovies />
+              <SavedMovies movies={saveCards} />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">
