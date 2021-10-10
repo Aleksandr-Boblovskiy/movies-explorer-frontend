@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router-dom';
 
 function MoviesCard({ movie, onSaveCard, onDeleteCard }) {
   // const [saveCard, setSaveCard] = useState(false);
@@ -12,6 +13,10 @@ function MoviesCard({ movie, onSaveCard, onDeleteCard }) {
       onDeleteCard(movie);
     }
     // setSaveCard(!saveCard);
+  }
+
+  function handleDeleteCard() {
+    onDeleteCard(movie);
   }
 
   return (
@@ -26,7 +31,14 @@ function MoviesCard({ movie, onSaveCard, onDeleteCard }) {
             мин
           </p>
         </div>
-        <button className={movie.save ? 'card__save card__save_active' : 'card__save'} type="button" aria-label="save" onClick={handleCardSave} />
+        <Switch>
+          <Route path="/movies">
+            <button className={movie.save ? 'card__save card__save_active' : 'card__save'} type="button" aria-label="save" onClick={handleCardSave} />
+          </Route>
+          <Route path="/saved-movies">
+            <button className="card__delete" type="button" aria-label="save" onClick={handleDeleteCard} />
+          </Route>
+        </Switch>
       </div>
       <img className="card__image" src={movie.image} alt={movie.nameRU} />
     </li>

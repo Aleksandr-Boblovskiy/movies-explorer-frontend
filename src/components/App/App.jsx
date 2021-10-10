@@ -27,6 +27,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 function App() {
   const [cards, setCards] = React.useState([]);
   const [saveCards, setSaveCards] = React.useState([]);
+  const [saveVisuCards, setSaveVisuCards] = React.useState([]);
   const [preloaderVisible, setpreloaderVisible] = React.useState(false);
   const [notFoundText, setnotFoundText] = React.useState(false);
   const [moreButton, setmoreButton] = React.useState(false);
@@ -44,28 +45,60 @@ function App() {
     setmoreButton(false);
     let findMovies = JSON.parse(localStorage.getItem('findMovies'));
 
-    if (findMovies) {
-      if (filterValue) {
-        findMovies = findMovies.filter((item) => item.duration <= 40);
-      }
-      if (findMovies.length > 12) {
-        setmoreButton(true);
-        for (let i = 0; i < 12; i++) {
-          showMovies.push(findMovies.shift());
-        }
-        setFilterMovies(findMovies.slice());
-        setpreloaderVisible(false);
-        setCards(showMovies.slice());
-      } else if (findMovies.length === 0) {
-        setnotFoundText(true);
-        setpreloaderVisible(true);
-        setCards(findMovies.slice());
-      } else {
-        setnotFoundText(false);
-        setpreloaderVisible(false);
-        setCards(findMovies.slice());
-      }
-    }
+    MainApi.getUserInfo()
+      .then((userData) => {
+        setCurrentUser(userData);
+        MainApi.getMovies()
+          .then((data) => {
+            setSaveCards(data);
+            const tmpArr = [];
+            data.forEach((item) => {
+              if (item.owner === currentUser._id) {
+                tmpArr.push(item);
+              }
+            });
+            setSaveVisuCards(tmpArr);
+            findMovies.forEach((movie) => {
+              if (data.findIndex((item) => {
+                if (item.movieId === movie.movieId && item.owner === userData._id) {
+                  return true;
+                }
+                return false;
+              }) !== -1) {
+                movie.save = true;
+              }
+            });
+
+            if (findMovies) {
+              if (filterValue) {
+                findMovies = findMovies.filter((item) => item.duration <= 40);
+              }
+              if (findMovies.length > 12) {
+                setmoreButton(true);
+                for (let i = 0; i < 12; i++) {
+                  showMovies.push(findMovies.shift());
+                }
+                setFilterMovies(findMovies.slice());
+                setpreloaderVisible(false);
+                setCards(showMovies.slice());
+              } else if (findMovies.length === 0) {
+                setnotFoundText(true);
+                setpreloaderVisible(true);
+                setCards(findMovies.slice());
+              } else {
+                setnotFoundText(false);
+                setpreloaderVisible(false);
+                setCards(findMovies.slice());
+              }
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [filterValue]);
 
   function handleChangeFilter(e) {
@@ -205,11 +238,20 @@ function App() {
       }
       return false;
     }) === -1) {
+      if (saveMovie.country === null) {
+        saveMovie.country = ' ';
+      }
+      if (saveMovie.nameEN === '') {
+        saveMovie.nameEN = ' ';
+      }
       MainApi.saveMovie(saveMovie)
         .then((card) => {
-          const tempCards = saveCards;
+          let tempCards = saveCards;
           tempCards.push(card);
-          setSaveCards(tempCards);
+          setSaveCards(tempCards.slice());
+          tempCards = saveVisuCards;
+          tempCards.push(card);
+          setSaveVisuCards(tempCards.slice());
           const index = cards.findIndex((item) => {
             if (item.movieId === card.movieId && card.owner === currentUser._id) {
               return true;
@@ -246,6 +288,13 @@ function App() {
         MainApi.getMovies()
           .then((data) => {
             setSaveCards(data);
+            const tmpArr = [];
+            data.forEach((item) => {
+              if (item.owner === currentUser._id) {
+                tmpArr.push(item);
+              }
+            });
+            setSaveVisuCards(tmpArr);
           })
           .catch((err) => {
             console.log(err);
@@ -271,6 +320,13 @@ function App() {
       MainApi.getMovies()
         .then((data) => {
           setSaveCards(data);
+          const tmpArr = [];
+          data.forEach((item) => {
+            if (item.owner === currentUser._id) {
+              tmpArr.push(item);
+            }
+          });
+          setSaveVisuCards(tmpArr);
         })
         .catch((err) => {
           console.log(err);
@@ -388,7 +444,7 @@ function App() {
             </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header />
-              <SavedMovies movies={saveCards} />
+              <SavedMovies movies={saveVisuCards} preloader={preloaderVisible} notFoundText={notFoundText} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">

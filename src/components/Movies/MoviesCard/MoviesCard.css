@@ -44,6 +44,17 @@
   cursor: pointer;
 }
 
+.card__delete {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  background-image: url('../../../images/delete.svg');
+  cursor: pointer;
+}
+
 .card__save_active {
   background-image: url('../../../images/save_act.svg');
 }
