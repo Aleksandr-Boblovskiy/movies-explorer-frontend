@@ -51,12 +51,15 @@ function App() {
         MainApi.getMovies()
           .then((data) => {
             setSaveCards(data);
-            const tmpArr = [];
+            let tmpArr = [];
             data.forEach((item) => {
               if (item.owner === currentUser._id) {
                 tmpArr.push(item);
               }
             });
+            if (filterValue) {
+              tmpArr = tmpArr.filter((item) => item.duration <= 40);
+            }
             setSaveVisuCards(tmpArr);
             findMovies.forEach((movie) => {
               if (data.findIndex((item) => {
@@ -315,7 +318,10 @@ function App() {
             tmpArr.push(item);
           }
         });
-        const findCards = tmpArr.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+        let findCards = tmpArr.filter((item) => item.nameRU.toLowerCase().includes(filmName.toLowerCase()));
+        if (filterValue) {
+          findCards = findCards.filter((item) => item.duration <= 40);
+        }
         if (findCards.length === 0) {
           setnotFoundText(true);
         } else {
@@ -484,7 +490,7 @@ function App() {
             </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header onClickSave={headerClickSave} />
-              <SavedMovies movies={saveVisuCards} searchFilm={searchFilmSave} preloader={preloaderVisible} notFoundText={notFoundText} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
+              <SavedMovies movies={saveVisuCards} searchFilm={searchFilmSave} preloader={preloaderVisible} notFoundText={notFoundText} filterValue={filterValue} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">
