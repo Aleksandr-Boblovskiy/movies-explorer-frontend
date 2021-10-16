@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
@@ -45,64 +46,51 @@ function App() {
     setmoreButton(false);
     let findMovies = JSON.parse(localStorage.getItem('findMovies'));
 
-    MainApi.getUserInfo()
-      .then((userData) => {
-        setCurrentUser(userData);
-        MainApi.getMovies()
-          .then((data) => {
-            setSaveCards(data);
-            let tmpArr = [];
-            data.forEach((item) => {
-              if (item.owner === currentUser._id) {
-                tmpArr.push(item);
-              }
-            });
-            if (filterValue) {
-              tmpArr = tmpArr.filter((item) => item.duration <= 40);
-            }
-            setSaveVisuCards(tmpArr);
-            findMovies.forEach((movie) => {
-              if (data.findIndex((item) => {
-                if (item.movieId === movie.movieId && item.owner === userData._id) {
-                  return true;
-                }
-                return false;
-              }) !== -1) {
-                movie.save = true;
-              }
-            });
-
-            if (findMovies) {
-              if (filterValue) {
-                findMovies = findMovies.filter((item) => item.duration <= 40);
-              }
-              if (findMovies.length > 12) {
-                setmoreButton(true);
-                for (let i = 0; i < 12; i++) {
-                  showMovies.push(findMovies.shift());
-                }
-                setFilterMovies(findMovies.slice());
-                setpreloaderVisible(false);
-                setCards(showMovies.slice());
-              } else if (findMovies.length === 0) {
-                setnotFoundText(true);
-                setpreloaderVisible(true);
-                setCards(findMovies.slice());
-              } else {
-                setnotFoundText(false);
-                setpreloaderVisible(false);
-                setCards(findMovies.slice());
-              }
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [filterValue]);
+    const newMass = [];
+    findMovies.forEach((movie) => {
+      if (saveCards.findIndex((item) => {
+        if (item.movieId === movie.movieId && item.owner === currentUser._id) {
+          return true;
+        }
+        return false;
+      }) !== -1) {
+        movie.save = true;
+      }
+      newMass.push(movie);
+    });
+    findMovies = newMass;
+    localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    if (findMovies) {
+      if (filterValue) {
+        findMovies = findMovies.filter((item) => item.duration <= 40);
+      }
+      let lengthFilm;
+      if (document.documentElement.clientWidth >= 1023) {
+        lengthFilm = 12;
+      } else if (document.documentElement.clientWidth <= 480) {
+        lengthFilm = 5;
+      } else {
+        lengthFilm = 8;
+      }
+      if (findMovies.length > lengthFilm) {
+        setmoreButton(true);
+        for (let i = 0; i < lengthFilm; i++) {
+          showMovies.push(findMovies.shift());
+        }
+        setFilterMovies(findMovies.slice());
+        setpreloaderVisible(false);
+        setCards(showMovies.slice());
+      } else if (findMovies.length === 0) {
+        setnotFoundText(true);
+        setpreloaderVisible(true);
+        setCards(findMovies.slice());
+      } else {
+        setnotFoundText(false);
+        setpreloaderVisible(false);
+        setCards(findMovies.slice());
+      }
+    }
+  }, [filterValue, saveCards]);
 
   function handleChangeFilter(e) {
     setFilterValue(e.target.checked);
@@ -148,6 +136,64 @@ function App() {
   //   }, 200);
   // });
 
+  function resizedw() {
+    const showMovies = [];
+    setmoreButton(false);
+    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
+
+    const newMass = [];
+    findMovies.forEach((movie) => {
+      if (saveCards.findIndex((item) => {
+        if (item.movieId === movie.movieId && item.owner === currentUser._id) {
+          return true;
+        }
+        return false;
+      }) !== -1) {
+        movie.save = true;
+      }
+      newMass.push(movie);
+    });
+    findMovies = newMass;
+    localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    if (findMovies) {
+      if (filterValue) {
+        findMovies = findMovies.filter((item) => item.duration <= 40);
+      }
+      let lengthFilm;
+      if (document.documentElement.clientWidth >= 1023) {
+        lengthFilm = 12;
+      } else if (document.documentElement.clientWidth <= 480) {
+        lengthFilm = 5;
+      } else {
+        lengthFilm = 8;
+      }
+      if (findMovies.length > lengthFilm) {
+        setmoreButton(true);
+        for (let i = 0; i < lengthFilm; i++) {
+          showMovies.push(findMovies.shift());
+        }
+        setFilterMovies(findMovies.slice());
+        setpreloaderVisible(false);
+        setCards(showMovies.slice());
+      } else if (findMovies.length === 0) {
+        setnotFoundText(true);
+        setpreloaderVisible(true);
+        setCards(findMovies.slice());
+      } else {
+        setnotFoundText(false);
+        setpreloaderVisible(false);
+        setCards(findMovies.slice());
+      }
+    }
+  }
+
+  let doit;
+  // eslint-disable-next-line func-names
+  window.onresize = function () {
+    clearTimeout(doit);
+    doit = setTimeout(resizedw, 100);
+  };
+
   const searchFilm = (filmName) => {
     setpreloaderVisible(true);
     setmoreButton(false);
@@ -185,9 +231,17 @@ function App() {
     if (filterValue) {
       findMovies = findMovies.filter((item) => item.duration <= 40);
     }
-    if (findMovies.length > 12) {
+    let lengthFilm;
+    if (document.documentElement.clientWidth >= 1023) {
+      lengthFilm = 12;
+    } else if (document.documentElement.clientWidth <= 480) {
+      lengthFilm = 5;
+    } else {
+      lengthFilm = 8;
+    }
+    if (findMovies.length > lengthFilm) {
       setmoreButton(true);
-      for (let i = 0; i < 12; i++) {
+      for (let i = 0; i < lengthFilm; i++) {
         showMovies.push(findMovies.shift());
       }
       setFilterMovies(findMovies);
@@ -206,8 +260,16 @@ function App() {
   const clickMore = () => {
     const showMovies = cards;
     const findMovies = filterMovies;
-    if (findMovies.length > 3) {
-      for (let i = 0; i < 3; i++) {
+    let lengthMore;
+    if (document.documentElement.clientWidth >= 1023) {
+      lengthMore = 3;
+    } else if (document.documentElement.clientWidth <= 480) {
+      lengthMore = 1;
+    } else {
+      lengthMore = 2;
+    }
+    if (findMovies.length > lengthMore) {
+      for (let i = 0; i < lengthMore; i++) {
         showMovies.push(findMovies.shift());
       }
       setCards(showMovies.slice());
@@ -280,7 +342,7 @@ function App() {
     const { _id } = moviedel;
     MainApi.deleteMovie(_id)
       .then((card) => {
-        const index = cards.findIndex((item) => {
+        let index = cards.findIndex((item) => {
           if (item.movieId === card.message.movieId && card.message.owner === currentUser._id) {
             return true;
           }
@@ -288,6 +350,15 @@ function App() {
         });
         cards[index].save = false;
         setCards(cards.slice());
+        const findMovies = JSON.parse(localStorage.getItem('findMovies'));
+        index = findMovies.findIndex((item) => {
+          if (item.movieId === card.message.movieId && card.message.owner === currentUser._id) {
+            return true;
+          }
+          return false;
+        });
+        findMovies[index].save = false;
+        localStorage.setItem('findMovies', JSON.stringify(findMovies));
         MainApi.getMovies()
           .then((data) => {
             setSaveCards(data);

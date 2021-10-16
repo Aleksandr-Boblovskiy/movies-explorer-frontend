@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-param-reassign */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
@@ -10,10 +11,10 @@ function MoviesCardList({ movies, onSaveCard, onDeleteCard }) {
     <section className="movieslist">
       <ul className="movieslist__cont">
         {
-          movies.map((movie) => (
+          movies.map((movie, index) => (
             <MoviesCard
               movie={movie}
-              key={movie.id}
+              key={index}
               onSaveCard={onSaveCard}
               onDeleteCard={onDeleteCard}
             />

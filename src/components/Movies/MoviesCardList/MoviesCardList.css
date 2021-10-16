@@ -1,12 +1,33 @@
 .movieslist__cont {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(278px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   row-gap: 30px;
   column-gap: 24px;
   margin: 0;
   padding: 0;
   
 }
+
+@media screen and (max-width: 1023px){
+  .movieslist__cont {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
+
+@media screen and (max-width: 767px){
+  .movieslist__cont {
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px){
+  .movieslist__cont {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+}
+
+
  
  
