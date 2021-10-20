@@ -37,7 +37,6 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [textErr, setTextErr] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
-  // const [registredStatus, setRegistredStatus] = React.useState();
 
   const history = useHistory();
 
@@ -174,7 +173,6 @@ function App() {
       saveMovie.description = movie.description;
       saveMovie.thumbnail = `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
       saveMovie.movieId = movie.id;
-      // saveMovie.owner = currentUser._id;
       saveMovie.trailer = movie.trailerLink;
       saveMovie.image = `https://api.nomoreparties.co${movie.image.url}`;
       saveMovie.nameRU = movie.nameRU;
@@ -247,18 +245,6 @@ function App() {
 
   const handleSaveCard = (movie) => {
     const saveMovie = movie;
-    // saveMovie.country = movie.country;
-    // saveMovie.director = movie.director;
-    // saveMovie.duration = movie.duration;
-    // saveMovie.year = movie.year;
-    // saveMovie.description = movie.description;
-    // saveMovie.thumbnail = `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`;
-    // saveMovie.movieId = movie.id;
-    // // saveMovie.owner = currentUser._id;
-    // saveMovie.trailer = movie.trailerLink;
-    // saveMovie.image = `https://api.nomoreparties.co${movie.image.url}`;
-    // saveMovie.nameRU = movie.nameRU;
-    // saveMovie.nameEN = movie.nameEN;
     delete saveMovie.save;
     if (saveCards.findIndex((item) => {
       if (item.movieId === saveMovie.movieId && item.owner === currentUser._id) {
@@ -529,10 +515,6 @@ function App() {
               <Header />
               <Profile onSignOut={onSignOut} onUpdateUser={onUpdateUser} errMsg={textErr} />
             </ProtectedRoute>
-            {/* <ProtectedRoute path="/profile_edit" loggedIn={loggedIn}>
-              <Header />
-              <Profile onSignOut={onSignOut} />
-            </ProtectedRoute> */}
             <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
               <Header onClickSave={headerClickSave} />
               <SavedMovies movies={saveVisuCards} searchFilm={searchFilmSave} preloader={preloaderVisible} notFoundText={notFoundText} filterValue={filterValue} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
