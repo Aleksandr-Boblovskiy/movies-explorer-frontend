@@ -99,46 +99,6 @@ function App() {
     setFilterValue(e.target.checked);
   }
 
-  MoviesApi.getInitialCards()
-    .then((data) => {
-      localStorage.setItem('allMovies', JSON.stringify(data));
-      // if (document.documentElement.clientWidth < 768) {
-      //   for (let i = 0; i < 5; i += 1) {
-      //     movies.push(testMovies[i]);
-      //   }
-      // } else if (document.documentElement.clientWidth < 1024) {
-      //   for (let i = 0; i < 8; i += 1) {
-      //     movies.push(testMovies[i]);
-      //   }
-      // } else {
-      //   for (let i = 0; i < 12; i += 1) {
-      //     movies.push(testMovies[i]);
-      //   }
-      // }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  // window.addEventListener('resize', () => {
-  //   setTimeout(() => {
-  //     movies = [];
-  //     if (document.documentElement.clientWidth < 768) {
-  //       for (let i = 0; i < 5; i += 1) {
-  //         movies.push(moviesdb[i]);
-  //       }
-  //     } else if (document.documentElement.clientWidth < 1024) {
-  //       for (let i = 0; i < 8; i += 1) {
-  //         movies.push(moviesdb[i]);
-  //       }
-  //     } else {
-  //       for (let i = 0; i < 12; i += 1) {
-  //         movies.push(moviesdb[i]);
-  //       }
-  //     }
-  //   }, 200);
-  // });
-
   function resizedw() {
     const showMovies = [];
     setmoreButton(false);
@@ -435,6 +395,14 @@ function App() {
       MainApi.getUserInfo()
         .then((userData) => {
           setCurrentUser(userData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      MoviesApi.getInitialCards()
+        .then((data) => {
+          localStorage.setItem('allMovies', JSON.stringify(data));
         })
         .catch((err) => {
           console.log(err);
