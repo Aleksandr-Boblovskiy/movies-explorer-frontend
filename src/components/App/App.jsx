@@ -44,8 +44,11 @@ function App() {
   React.useEffect(() => {
     const showMovies = [];
     setmoreButton(false);
-    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
 
+    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
+    if (findMovies === null) {
+      findMovies = [];
+    }
     const newMass = [];
     findMovies.forEach((movie) => {
       if (saveCards.findIndex((item) => {
@@ -339,6 +342,9 @@ function App() {
       }
       return false;
     });
+    if (moviedel === undefined) {
+      return;
+    }
     const { _id } = moviedel;
     MainApi.deleteMovie(_id)
       .then((card) => {
