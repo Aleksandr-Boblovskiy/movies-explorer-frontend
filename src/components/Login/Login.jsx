@@ -15,6 +15,16 @@ function Login({ onLogin, errMsg }) {
     const { value } = target;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: target.validationMessage });
+
+    if (name === 'email') {
+      const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      if (!regex.test(value)) {
+        setErrors({ ...errors, [name]: 'Поле email должно соответсвовать шаблону электронной почты' });
+        setIsValid(false);
+        return;
+      }
+    }
+
     setIsValid(target.closest('form').checkValidity());
   };
 

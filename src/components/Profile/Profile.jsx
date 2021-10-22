@@ -6,8 +6,6 @@ import { Link, Route, Switch } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile(props) {
-  // const [name, setName] = React.useState();
-  // const [email, setEmail] = React.useState();
   const [values, setValues] = React.useState({});
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
@@ -39,6 +37,14 @@ function Profile(props) {
         return;
       }
     }
+    if (name === 'email') {
+      const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      if (!regex.test(value)) {
+        setErrors({ ...errors, [name]: 'Поле email должно соответсвовать шаблону электронной почты' });
+        setIsValid(false);
+        return;
+      }
+    }
     if (name === 'name' && value === currentUser.name) {
       if (values.email === currentUser.email) {
         setIsValid(false);
@@ -54,26 +60,11 @@ function Profile(props) {
     setIsValid(target.closest('form').checkValidity());
   };
 
-  // const resetForm = useCallback(
-  //   (newValues = {}, newErrors = {}, newIsValid = false) => {
-  //     setValues(newValues);
-  //     setErrors(newErrors);
-  //     setIsValid(newIsValid);
-  //   },
-  //   [setValues, setErrors, setIsValid],
-  // );
-
-  // return {
-  //   values, handleChange, errors, isValid, resetForm,
-  // };
-
   function handleSubmit(e) {
     e.preventDefault();
     if (isValid) {
       props.onUpdateUser(values);
       setIsValid(false);
-      // resetForm();
-      // e.target.closest('form').reset();
     }
   }
 

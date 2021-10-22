@@ -24,6 +24,14 @@ function Register({ onRegister, errMsg }) {
         return;
       }
     }
+    if (name === 'email') {
+      const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      if (!regex.test(value)) {
+        setErrors({ ...errors, [name]: 'Поле email должно соответсвовать шаблону электронной почты' });
+        setIsValid(false);
+        return;
+      }
+    }
     setIsValid(target.closest('form').checkValidity());
   };
 

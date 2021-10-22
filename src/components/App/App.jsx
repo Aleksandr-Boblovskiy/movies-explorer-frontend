@@ -435,6 +435,7 @@ function App() {
         MainApi.login(email, password)
           .then((res) => {
             setLoggedIn(true);
+            setIsCheckingToken(false);
             // setCurrentUser({ email, name });
             history.push('/movies');
           })
@@ -462,6 +463,7 @@ function App() {
     MainApi.login(email, password)
       .then((res) => {
         setLoggedIn(true);
+        setIsCheckingToken(false);
         history.push('/movies');
       })
       .catch((err) => {
@@ -479,6 +481,7 @@ function App() {
     MainApi.patchUser(email, name)
       .then((res) => {
         setCurrentUser({ email: res.email, name: res.name });
+        setTextErr('Данные пользователя обновленны.');
       })
       .catch((err) => {
         if (err === 'Ошибка: 400') {
