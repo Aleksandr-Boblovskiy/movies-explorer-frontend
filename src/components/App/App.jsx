@@ -481,7 +481,7 @@ function App() {
     MainApi.patchUser(email, name)
       .then((res) => {
         setCurrentUser({ email: res.email, name: res.name });
-        setTextErr('Данные пользователя успешно обновленны.');
+        setTextErr('Данные пользователя успешно обновлены.');
       })
       .catch((err) => {
         if (err === 'Ошибка: 400') {
