@@ -37,6 +37,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [textErr, setTextErr] = React.useState('');
   const [currentUser, setCurrentUser] = React.useState({});
+  const [isCheckingToken, setIsCheckingToken] = React.useState(true);
 
   const history = useHistory();
 
@@ -418,7 +419,8 @@ function App() {
         .then((res) => {
           setCurrentUser(res);
           setLoggedIn(true);
-          history.push('/movies');
+          setIsCheckingToken(false);
+          // history.push(history);
         })
         .catch(() => {
           localStorage.removeItem('jwt');
@@ -502,32 +504,33 @@ function App() {
 
           <Switch>
             <Route exact path="/">
-              <Header />
+              <Header loggedIn={loggedIn} onClickSave={headerClickSave} />
               <Main />
               <Footer />
             </Route>
-            <ProtectedRoute path="/movies" loggedIn={loggedIn}>
+            <ProtectedRoute path="/movies" loggedIn={loggedIn} isCheckingToken={isCheckingToken}>
               <Header onClickSave={headerClickSave} />
               <Movies movies={cards} searchFilm={searchFilm} preloader={preloaderVisible} notFoundText={notFoundText} moreButton={moreButton} clickMore={clickMore} filterValue={filterValue} onFilterChange={handleChangeFilter} onSaveCard={handleSaveCard} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
-            <ProtectedRoute path="/profile" loggedIn={loggedIn}>
-              <Header />
+            <ProtectedRoute path="/profile" loggedIn={loggedIn} isCheckingToken={isCheckingToken}>
+              <Header onClickSave={headerClickSave} />
               <Profile onSignOut={onSignOut} onUpdateUser={onUpdateUser} errMsg={textErr} />
             </ProtectedRoute>
-            <ProtectedRoute path="/saved-movies" loggedIn={loggedIn}>
+            <ProtectedRoute path="/saved-movies" loggedIn={loggedIn} isCheckingToken={isCheckingToken}>
               <Header onClickSave={headerClickSave} />
               <SavedMovies movies={saveVisuCards} searchFilm={searchFilmSave} preloader={preloaderVisible} notFoundText={notFoundText} filterValue={filterValue} onFilterChange={handleChangeFilter} onDeleteCard={handleDeleteCard} />
               <Footer />
             </ProtectedRoute>
             <Route path="/signup">
+              {loggedIn && <Redirect to="/movies" />}
               <Register onRegister={onRegister} errMsg={textErr} />
             </Route>
             <Route path="/signin">
+              {loggedIn && <Redirect to="/movies" />}
               <Login onLogin={onLogin} errMsg={textErr} />
             </Route>
             <Route path="*">
-              {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
               <NotFound />
             </Route>
           </Switch>
