@@ -87,18 +87,14 @@ function Profile(props) {
           <input className="profile__input" type="email" value={values.email} name="email" id="email" autoComplete="off" onChange={handleChange} required />
           <span className="profile__error">{errors.email}</span>
         </div>
-        <p className="profile__serverror">{props.errMsg}</p>
+        <p className={`profile__serverror ${props.errMsg === 'Данные пользователя успешно обновлены.' ? 'profile__serverror_green' : ''}`}>{props.errMsg}</p>
         <Switch>
           <Route path="/profile" exact>
-            {/* <button className="profile__button" type="submit">Редактировать</button> */}
             <button className={isValid ? 'profile__button profile__button_save' : 'profile__button profile__button_save profile__button_disabled'} disabled={!isValid} type="submit">Сохранить</button>
             <Link to="/" className="profile__link">
               <button className="profile__button profile__button_red" type="button" onClick={props.onSignOut}>Выйти из аккаунта</button>
             </Link>
           </Route>
-          {/* <Route path="/profile_edit">
-            <button className="profile__button profile__button_save" type="submit">Сохранить</button>
-          </Route> */}
         </Switch>
 
       </form>

@@ -102,6 +102,10 @@
   min-height: 13px;
 }
 
+.profile__serverror_green {
+  color: green;
+}
+
 @media screen and (max-width:430px) {
   .profile {
     width: 81.25%;
