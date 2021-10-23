@@ -77,6 +77,16 @@
   margin-right: 14px;
 }
 
+.search__error {
+  font-size: 10px;
+  line-height: 12px;
+  color: #EE3465;
+  display: block;
+  margin-top: 6px;
+  margin-left: 30px;
+  min-height: 24px;
+}
+
 @media screen and (max-width: 767px) {
   .search__image {
     display: none;

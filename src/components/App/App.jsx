@@ -8,7 +8,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import {
-  Route, Switch, useHistory, Redirect,
+  Route, Switch, useHistory, Redirect, useLocation,
 } from 'react-router-dom';
 import './App.css';
 import Header from '../Header/Header';
@@ -40,12 +40,16 @@ function App() {
   const [isCheckingToken, setIsCheckingToken] = React.useState(true);
 
   const history = useHistory();
+  const { pathname } = useLocation();
 
   React.useEffect(() => {
     const showMovies = [];
     setmoreButton(false);
-
-    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    let findMovies = null;
+    if (user._id === currentUser._id) {
+      findMovies = JSON.parse(localStorage.getItem('findMovies'));
+    }
     if (findMovies === null) {
       findMovies = [];
     }
@@ -62,7 +66,9 @@ function App() {
       newMass.push(movie);
     });
     findMovies = newMass;
-    localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    if (user._id === currentUser._id) {
+      localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    }
     if (findMovies) {
       if (filterValue) {
         findMovies = findMovies.filter((item) => item.duration <= 40);
@@ -93,7 +99,7 @@ function App() {
         setCards(findMovies.slice());
       }
     }
-  }, [filterValue, saveCards]);
+  }, [filterValue, saveCards, currentUser, pathname]);
 
   function handleChangeFilter(e) {
     setFilterValue(e.target.checked);
@@ -102,8 +108,14 @@ function App() {
   function resizedw() {
     const showMovies = [];
     setmoreButton(false);
-    let findMovies = JSON.parse(localStorage.getItem('findMovies'));
-
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    let findMovies = null;
+    if (user._id === currentUser._id) {
+      findMovies = JSON.parse(localStorage.getItem('findMovies'));
+    }
+    if (findMovies === null) {
+      findMovies = [];
+    }
     const newMass = [];
     findMovies.forEach((movie) => {
       if (saveCards.findIndex((item) => {
@@ -117,7 +129,9 @@ function App() {
       newMass.push(movie);
     });
     findMovies = newMass;
-    localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    if (user._id === currentUser._id) {
+      localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    }
     if (findMovies) {
       if (filterValue) {
         findMovies = findMovies.filter((item) => item.duration <= 40);
@@ -190,6 +204,7 @@ function App() {
     });
     findMovies = newMass;
     localStorage.setItem('findMovies', JSON.stringify(findMovies));
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
     if (filterValue) {
       findMovies = findMovies.filter((item) => item.duration <= 40);
     }
@@ -312,6 +327,7 @@ function App() {
         });
         findMovies[index].save = false;
         localStorage.setItem('findMovies', JSON.stringify(findMovies));
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
         MainApi.getMovies()
           .then((data) => {
             setSaveCards(data);

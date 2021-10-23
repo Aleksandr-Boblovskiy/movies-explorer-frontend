@@ -6,14 +6,23 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
 function SearchForm({ onSearch, filterValue, onFilterChange }) {
   const [search, setSearch] = React.useState('');
+  const [errorText, setErrorText] = React.useState('');
 
   function handleChangeSearch(e) {
     setSearch(e.target.value);
+    setErrorText('');
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSearch(search);
+    setErrorText('');
+    let str = search;
+    str = str.trim();
+    if (str === '') {
+      setErrorText('Нужно ввести ключевое слово');
+    } else {
+      onSearch(search);
+    }
   }
 
   return (
@@ -22,7 +31,7 @@ function SearchForm({ onSearch, filterValue, onFilterChange }) {
         <div className="search__cont">
           <div className="search__name-cont">
             <img src={find} alt="Найти" className="search__image" />
-            <input type="text" name="movie-search" id="movie-search" className="search__text" placeholder="Фильм" required value={search} onChange={handleChangeSearch} />
+            <input type="text" name="movie-search" id="movie-search" className="search__text" placeholder="Фильм" value={search} onChange={handleChangeSearch} />
             <button className="search__button" type="submit">
               <img className="search__image-find" src={findButton} alt="Найти" />
             </button>
@@ -31,6 +40,7 @@ function SearchForm({ onSearch, filterValue, onFilterChange }) {
           <FilterCheckbox filterValue={filterValue} onFilterChange={onFilterChange} />
         </div>
       </form>
+      <span className="search__error">{errorText}</span>
     </section>
   );
 }
