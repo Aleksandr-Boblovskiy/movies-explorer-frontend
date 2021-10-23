@@ -172,6 +172,7 @@ function App() {
   };
 
   const searchFilm = (filmName) => {
+    setnotFoundText(false);
     setpreloaderVisible(true);
     setmoreButton(false);
     setCards([]);
@@ -349,6 +350,7 @@ function App() {
   };
 
   const searchFilmSave = (filmName) => {
+    setnotFoundText(false);
     setpreloaderVisible(true);
     MainApi.getMovies()
       .then((data) => {
@@ -403,9 +405,13 @@ function App() {
           console.log(err);
         });
 
+      setnotFoundText(false);
+      setpreloaderVisible(true);
+
       MoviesApi.getInitialCards()
         .then((data) => {
           localStorage.setItem('allMovies', JSON.stringify(data));
+          setpreloaderVisible(false);
         })
         .catch((err) => {
           console.log(err);
@@ -414,6 +420,7 @@ function App() {
       MainApi.getMovies()
         .then((data) => {
           setSaveCards(data);
+          setpreloaderVisible(false);
           const tmpArr = [];
           data.forEach((item) => {
             if (item.owner === currentUser._id) {
