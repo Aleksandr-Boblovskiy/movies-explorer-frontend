@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useState } from 'react';
@@ -10,9 +11,13 @@ import account from '../../images/account.svg';
 import burgerLogo from '../../images/burger.svg';
 import burgerCloseLogo from '../../images/burger_close.svg';
 
-function Header() {
+function Header({ onClickSave, loggedIn }) {
   const { pathname } = useLocation();
   const [menuActive, setMenuActive] = useState(false);
+
+  function handeClickSave() {
+    onClickSave();
+  }
 
   return (
     <header className={`header ${(pathname === ('/')) ? 'header_landing' : ''}`}>
@@ -21,19 +26,33 @@ function Header() {
       </Link>
       <Switch>
         <Route path="/" exact>
-          <nav className="header__menu header__menu_landing">
-            <NavLink to="/signup" className="header__element-landing">
-              Регистрация
-            </NavLink>
-            <NavLink to="/signin" className="header__element-landing header__element-landing_button">
-              Войти
-            </NavLink>
-          </nav>
+          {!loggedIn
+            ? (
+              <nav className="header__menu header__menu_landing">
+                <NavLink to="/signup" className="header__element-landing">
+                  Регистрация
+                </NavLink>
+                <NavLink to="/signin" className="header__element-landing header__element-landing_button">
+                  Войти
+                </NavLink>
+              </nav>
+            )
+            : (
+              <nav className="header__menu">
+                <NavLink to="/movies" className="header__element" activeClassName="header__element_active">Фильмы</NavLink>
+                <NavLink to="/saved-movies" className="header__element" activeClassName="header__element_active" onClick={handeClickSave}>Сохраненные фильмы</NavLink>
+                <NavLink to="/profile" className="header__element" activeClassName="header__element_active">
+                  <p className="header__element-acc">Аккаунт</p>
+                  <img className="header__acc-img" alt="Аккаунт" src={account} />
+                </NavLink>
+              </nav>
+            )}
+
         </Route>
         <Route exact path="/(movies|saved-movies|profile|profile_edit)">
           <nav className="header__menu">
             <NavLink to="/movies" className="header__element" activeClassName="header__element_active">Фильмы</NavLink>
-            <NavLink to="/saved-movies" className="header__element" activeClassName="header__element_active">Сохраненные фильмы</NavLink>
+            <NavLink to="/saved-movies" className="header__element" activeClassName="header__element_active" onClick={handeClickSave}>Сохраненные фильмы</NavLink>
             <NavLink to="/profile" className="header__element" activeClassName="header__element_active">
               <p className="header__element-acc">Аккаунт</p>
               <img className="header__acc-img" alt="Аккаунт" src={account} />

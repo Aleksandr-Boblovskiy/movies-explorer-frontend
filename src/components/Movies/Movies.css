@@ -7,7 +7,7 @@
 
 .movies__line {
   border-bottom: 1px solid #424242;
-  margin: 69px 0 70px 0;
+  margin: 39px 0 70px 0;
 }
 
 .movies__more {
@@ -23,6 +23,11 @@
   font-size: 12px;
   line-height: 15px;
   cursor: pointer;
+  display: none;
+}
+
+.movies__more_active {
+  display: block;
 }
 
 .movies__more:hover {
