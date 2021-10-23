@@ -40,7 +40,9 @@ function MoviesCard({ movie, onSaveCard, onDeleteCard }) {
           </Route>
         </Switch>
       </div>
-      <img className="card__image" src={movie.image} alt={movie.nameRU} />
+      <a href={movie.trailer} target="_blank" rel="noreferrer">
+        <img className="card__image" src={movie.image} alt={movie.nameRU} />
+      </a>
     </li>
   );
 }
