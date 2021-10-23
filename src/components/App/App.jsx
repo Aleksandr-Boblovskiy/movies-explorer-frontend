@@ -45,6 +45,7 @@ function App() {
   React.useEffect(() => {
     const showMovies = [];
     setmoreButton(false);
+    setnotFoundText(false);
     let user = JSON.parse(localStorage.getItem('currentUser'));
     if (user === null) {
       user = [];
