@@ -46,6 +46,7 @@ function App() {
     const showMovies = [];
     setmoreButton(false);
     setnotFoundText(false);
+    setpreloaderVisible(false);
     let user = JSON.parse(localStorage.getItem('currentUser'));
     if (user === null) {
       user = [];
