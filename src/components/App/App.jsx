@@ -45,7 +45,10 @@ function App() {
   React.useEffect(() => {
     const showMovies = [];
     setmoreButton(false);
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    if (user === null) {
+      user = [];
+    }
     let findMovies = null;
     if (user._id === currentUser._id) {
       findMovies = JSON.parse(localStorage.getItem('findMovies'));
@@ -108,8 +111,11 @@ function App() {
   function resizedw() {
     const showMovies = [];
     setmoreButton(false);
-    const user = JSON.parse(localStorage.getItem('currentUser'));
+    let user = JSON.parse(localStorage.getItem('currentUser'));
     let findMovies = null;
+    if (user === null) {
+      user = [];
+    }
     if (user._id === currentUser._id) {
       findMovies = JSON.parse(localStorage.getItem('findMovies'));
     }
